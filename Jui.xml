@@ -71,6 +71,9 @@
         <member name="M:HomeSeer.Jui.Forms.InfoFormView.ToHtml(System.Int32)">
             <inheritdoc/>
         </member>
+        <member name="M:HomeSeer.Jui.Forms.InfoFormView.GetStringValue">
+            <inheritdoc/>
+        </member>
         <member name="T:HomeSeer.Jui.Forms.InputFormView">
             <inheritdoc />
             <summary>
@@ -90,6 +93,9 @@
             <param name="positiveActionId">The ID that will be sent to the API when the continue button is clicked</param>
         </member>
         <member name="M:HomeSeer.Jui.Forms.InputFormView.ToHtml(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HomeSeer.Jui.Forms.InputFormView.GetStringValue">
             <inheritdoc/>
         </member>
         <member name="T:HomeSeer.Jui.Forms.ProgressFormView">
@@ -123,6 +129,9 @@
             <param name="name">The title of the form</param>
         </member>
         <member name="M:HomeSeer.Jui.Forms.ProgressFormView.ToHtml(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:HomeSeer.Jui.Forms.ProgressFormView.GetStringValue">
             <inheritdoc/>
         </member>
         <member name="T:HomeSeer.Jui.Message">
@@ -520,6 +529,14 @@
             <param name="name">The name for the AbstractView</param>
             <exception cref="T:System.ArgumentNullException">Thrown if a view is created with an invalid ID</exception>
         </member>
+        <member name="M:HomeSeer.Jui.Views.AbstractView.GetStringValue">
+            <summary>
+            Get the value associated with this view as a string if there is one.
+            </summary>
+            <returns>
+            The value stored in this view as a string or NULL if there is no value stored.
+            </returns>
+        </member>
         <member name="M:HomeSeer.Jui.Views.AbstractView.Update(HomeSeer.Jui.Views.AbstractView)">
             <summary>
             Update the the user editable properties from a new version of the same view
@@ -530,6 +547,12 @@
             </param>
             <exception cref="T:System.ArgumentNullException">Thrown when the new state of the view is null</exception>
             <exception cref="T:System.InvalidOperationException">Thrown when the new view's ID or Type don't match the calling view</exception>
+        </member>
+        <member name="M:HomeSeer.Jui.Views.AbstractView.UpdateValue(System.String)">
+            <summary>
+            Update the value of the view
+            </summary>
+            <param name="value">The new value</param>
         </member>
         <member name="M:HomeSeer.Jui.Views.AbstractView.ToHtml(System.Int32)">
             <summary>
@@ -559,6 +582,9 @@
             <param name="name">The name of the View</param>
             <param name="actionId">The ID of the action sent when this button is clicked</param>
             <exception cref="T:System.ArgumentNullException">Thrown if a view is created with an invalid Name or ActionId</exception>
+        </member>
+        <member name="M:HomeSeer.Jui.Views.ButtonView.GetStringValue">
+            <inheritdoc/>
         </member>
         <member name="M:HomeSeer.Jui.Views.ButtonView.ToHtml(System.Int32)">
             <inheritdoc/>
@@ -608,12 +634,18 @@
             <exception cref="T:HomeSeer.Jui.Views.ViewTypeMismatchException">Thrown when the new view's class doesn't match the calling view</exception>
             <exception cref="T:HomeSeer.Jui.Views.InvalidValueForTypeException">Thrown when the value is invalid for the input type</exception>
         </member>
+        <member name="M:HomeSeer.Jui.Views.InputView.UpdateValue(System.String)">
+            <inheritdoc />
+        </member>
         <member name="M:HomeSeer.Jui.Views.InputView.IsValueValidForType(System.String)">
             <summary>
             Check if the value is valid for the type set on the input view
             </summary>
             <param name="value">The value to check</param>
             <returns>TRUE if the value is valid for the type or FALSE if it is not</returns>
+        </member>
+        <member name="M:HomeSeer.Jui.Views.InputView.GetStringValue">
+            <inheritdoc/>
         </member>
         <member name="M:HomeSeer.Jui.Views.InputView.ToHtml(System.Int32)">
             <inheritdoc/>
@@ -702,6 +734,9 @@
             <param name="value">The text displayed by the label</param>
             <exception cref="T:System.ArgumentNullException">Thrown if both the name and value are empty</exception>
         </member>
+        <member name="M:HomeSeer.Jui.Views.LabelView.GetStringValue">
+            <inheritdoc/>
+        </member>
         <member name="M:HomeSeer.Jui.Views.LabelView.ToHtml(System.Int32)">
             <inheritdoc/>
         </member>
@@ -777,6 +812,15 @@
             </summary>
             <returns>An HTML representation of the page as a string</returns>
         </member>
+        <member name="M:HomeSeer.Jui.Views.Page.ToValueMap">
+            <summary>
+            Get a dictionary mapping IDs to values for the views on this page with mutable values.
+            <para>
+            These include: InputViews, SelectListViews, and ToggleViews
+            </para>
+            </summary>
+            <returns>A Dictionary of view IDs to view values</returns>
+        </member>
         <member name="M:HomeSeer.Jui.Views.Page.MapViewIds">
             <inheritdoc cref="M:HomeSeer.Jui.Views.ViewCollectionHelper.MapViewIds(System.Collections.Generic.List{HomeSeer.Jui.Views.AbstractView},System.Collections.Generic.Dictionary{System.String,System.Int32}@,System.Boolean)"/>
         </member>
@@ -817,6 +861,9 @@
         </member>
         <member name="M:HomeSeer.Jui.Views.Page.UpdateViewById(HomeSeer.Jui.Views.AbstractView)">
             <inheritdoc cref="M:HomeSeer.Jui.Views.ViewCollectionHelper.UpdateViewById(HomeSeer.Jui.Views.AbstractView,System.Collections.Generic.List{HomeSeer.Jui.Views.AbstractView}@,System.Collections.Generic.Dictionary{System.String,System.Int32}@)"/>
+        </member>
+        <member name="M:HomeSeer.Jui.Views.Page.UpdateViewValueById(System.String,System.String)">
+            <inheritdoc cref="M:HomeSeer.Jui.Views.ViewCollectionHelper.UpdateViewValueById(System.String,System.String,System.Collections.Generic.List{HomeSeer.Jui.Views.AbstractView}@,System.Collections.Generic.Dictionary{System.String,System.Int32}@)"/>
         </member>
         <member name="M:HomeSeer.Jui.Views.Page.RemoveAllViews">
             <inheritdoc cref="M:HomeSeer.Jui.Views.ViewCollectionHelper.RemoveAllViews(System.Collections.Generic.List{HomeSeer.Jui.Views.AbstractView}@,System.Collections.Generic.Dictionary{System.String,System.Int32}@)"/>
@@ -965,6 +1012,13 @@
             </summary>
             <exception cref="T:HomeSeer.Jui.Views.ViewTypeMismatchException">Thrown when the new view's class doesn't match the calling view</exception>
         </member>
+        <member name="M:HomeSeer.Jui.Views.SelectListView.UpdateValue(System.String)">
+            <inheritdoc />
+            <exception cref="T:System.FormatException">Thrown when the value is not in the correct format</exception>
+        </member>
+        <member name="M:HomeSeer.Jui.Views.SelectListView.GetStringValue">
+            <inheritdoc/>
+        </member>
         <member name="M:HomeSeer.Jui.Views.SelectListView.ToHtml(System.Int32)">
             <inheritdoc/>
         </member>
@@ -999,6 +1053,13 @@
             Update the view to the new state.  This will change the enabled state
             </summary>
             <exception cref="T:HomeSeer.Jui.Views.ViewTypeMismatchException">Thrown when the new view's class doesn't match the calling view</exception>
+        </member>
+        <member name="M:HomeSeer.Jui.Views.ToggleView.UpdateValue(System.String)">
+            <inheritdoc />
+            <exception cref="T:System.FormatException">Thrown when the value is not in the correct format</exception>
+        </member>
+        <member name="M:HomeSeer.Jui.Views.ToggleView.GetStringValue">
+            <inheritdoc/>
         </member>
         <member name="M:HomeSeer.Jui.Views.ToggleView.ToHtml(System.Int32)">
             <inheritdoc/>
@@ -1161,8 +1222,15 @@
         <member name="M:HomeSeer.Jui.Views.ViewGroup.GetViewById(System.String)">
             <inheritdoc cref="M:HomeSeer.Jui.Views.ViewCollectionHelper.GetViewById(System.String,System.Collections.Generic.List{HomeSeer.Jui.Views.AbstractView}@,System.Collections.Generic.Dictionary{System.String,System.Int32}@)"/>
         </member>
+        <member name="M:HomeSeer.Jui.Views.ViewGroup.GetStringValue">
+            <inheritdoc/>
+            <exception cref="T:System.InvalidOperationException">Thrown to indicate that this ViewGroup contains other views</exception>
+        </member>
         <member name="M:HomeSeer.Jui.Views.ViewGroup.UpdateViewById(HomeSeer.Jui.Views.AbstractView)">
             <inheritdoc cref="M:HomeSeer.Jui.Views.ViewCollectionHelper.UpdateViewById(HomeSeer.Jui.Views.AbstractView,System.Collections.Generic.List{HomeSeer.Jui.Views.AbstractView}@,System.Collections.Generic.Dictionary{System.String,System.Int32}@)"/>
+        </member>
+        <member name="M:HomeSeer.Jui.Views.ViewGroup.UpdateViewValueById(System.String,System.String)">
+            <inheritdoc cref="M:HomeSeer.Jui.Views.ViewCollectionHelper.UpdateViewValueById(System.String,System.String,System.Collections.Generic.List{HomeSeer.Jui.Views.AbstractView}@,System.Collections.Generic.Dictionary{System.String,System.Int32}@)"/>
         </member>
         <member name="M:HomeSeer.Jui.Views.ViewGroup.MapViewIds">
             <inheritdoc cref="M:HomeSeer.Jui.Views.ViewCollectionHelper.MapViewIds(System.Collections.Generic.List{HomeSeer.Jui.Views.AbstractView},System.Collections.Generic.Dictionary{System.String,System.Int32}@,System.Boolean)"/>

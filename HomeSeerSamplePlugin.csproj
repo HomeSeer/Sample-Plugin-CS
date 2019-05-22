@@ -44,6 +44,12 @@
     <Reference Include="Jui, Version=0.4.1.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>Jui.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+      <HintPath>Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PluginSdk, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>PluginSdk.dll</HintPath>
+    </Reference>
     <Reference Include="Scheduler, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>Scheduler.dll</HintPath>
     </Reference>

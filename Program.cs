@@ -1,15 +1,15 @@
 ﻿using HomeSeer.PluginSdk;
 
-namespace HomeSeerSamplePlugin {
+namespace HSPI_HomeSeerSamplePlugin {
 
 	internal class Program {
 
-		private static SamplePlugin Plugin;
+		private static HSPI Plugin;
 		private static InstanceComManager ComManager;
 
 		public static void Main(string[] args) {
 			
-			Plugin = new SamplePlugin();
+			Plugin = new HSPI();
 			ComManager = new InstanceComManager(Plugin, args);
 
 			ComManager.Connect();

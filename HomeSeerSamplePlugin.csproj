@@ -7,8 +7,8 @@
     <ProjectGuid>{AC94E16E-96E3-4FAF-8B90-1CFA59F8A866}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HomeSeerSamplePlugin</RootNamespace>
-    <AssemblyName>HomeSeerSamplePlugin</AssemblyName>
+    <RootNamespace>HSPI_HomeSeerSamplePlugin</RootNamespace>
+    <AssemblyName>HSPI_HomeSeerSamplePlugin</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -35,20 +35,12 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HomeSeerAPI, Version=1.0.2.1, Culture=neutral, PublicKeyToken=null">
-      <HintPath>HomeSeerAPI.dll</HintPath>
-    </Reference>
     <Reference Include="HSCF, Version=1.0.0.2, Culture=neutral, PublicKeyToken=null">
       <HintPath>HSCF.dll</HintPath>
     </Reference>
-    <Reference Include="Jui, Version=0.4.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>Jui.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
-      <HintPath>Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="PluginSdk, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>PluginSdk.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Scheduler, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>Scheduler.dll</HintPath>
@@ -59,13 +51,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SamplePlugin.cs" />
+    <Compile Include="HSPI.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PluginSdk\PluginSdk.csproj">
+      <Project>{8d2165fa-0dbe-4f59-815c-72157b2401cf}</Project>
+      <Name>PluginSdk</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

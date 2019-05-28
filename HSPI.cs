@@ -5,11 +5,10 @@ using System.Text;
 using HomeSeer.Jui.Types;
 using HomeSeer.Jui.Views;
 using HomeSeer.PluginSdk;
-using HomeSeerAPI;
 
-namespace HomeSeerSamplePlugin {
+namespace HSPI_HomeSeerSamplePlugin {
 
-    public class SamplePlugin : AbstractPlugin {
+    public class HSPI : AbstractPlugin {
         
         
         #region Properties
@@ -23,7 +22,7 @@ namespace HomeSeerSamplePlugin {
         
         #region Constructor
         
-        public SamplePlugin() : base() {
+        public HSPI() : base() {
             //Initialize settings pages
             //Build Settings Page 1
             var pageId = "settings-page1";
@@ -145,9 +144,9 @@ namespace HomeSeerSamplePlugin {
         }
         
         //TODO clean up the documentation here to better indicate how it should be used
-        public override IPlugInAPI.strInterfaceStatus InterfaceStatus() {
+        public override InterfaceStatus InterfaceStatus() {
             //TODO handle status
-            var intStat = new IPlugInAPI.strInterfaceStatus {intStatus = IPlugInAPI.enumInterfaceStatus.OK};
+            var intStat = new InterfaceStatus {intStatus = Constants.enumInterfaceStatus.OK};
             return intStat;
         }
                 

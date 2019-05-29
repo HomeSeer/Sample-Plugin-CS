@@ -112,7 +112,7 @@ namespace HSPI_HomeSeerSamplePlugin {
             return jsonSettingsPages;
         }
         
-        public override List<string> SaveJuiSettingsPages(List<string> pages) {
+        public override bool SaveJuiSettingsPages(List<string> pages) {
             foreach (var jsonPageDelta in pages) {
                 var pageDelta = Page.Factory.FromJsonString(jsonPageDelta);
                 var page      = SettingsPages[SettingsPageIndexes[pageDelta.Id]];
@@ -139,8 +139,8 @@ namespace HSPI_HomeSeerSamplePlugin {
             }
             
             //Return the new state of the settings pages
-            var jsonSettingsPages = SettingsPages.Select(p => p.ToJsonString()).ToList();
-            return jsonSettingsPages;
+            //var jsonSettingsPages = SettingsPages.Select(p => p.ToJsonString()).ToList();
+            return true;
         }
         
         //TODO clean up the documentation here to better indicate how it should be used

@@ -106,6 +106,7 @@ namespace HSPI_HomeSeerSamplePlugin {
 
         protected override void Initialize() {
             //Default behavior is sufficient
+            Console.WriteLine("Initialized");
         }
 
         public override List<string> GetJuiSettingsPages() {

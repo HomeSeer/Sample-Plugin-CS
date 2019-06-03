@@ -28,22 +28,20 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\HomeSeer\HomeSeer\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HSCF, Version=1.0.0.2, Culture=neutral, PublicKeyToken=null">
-      <HintPath>HSCF.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\HomeSeer\HomeSeer\bin\homeseer\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="Scheduler, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>Scheduler.dll</HintPath>
+    <Reference Include="PluginSdk, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\HomeSeer\HomeSeer\bin\homeseer\PluginSdk.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -58,12 +56,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PluginSdk\PluginSdk.csproj">
-      <Project>{8d2165fa-0dbe-4f59-815c-72157b2401cf}</Project>
-      <Name>PluginSdk</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

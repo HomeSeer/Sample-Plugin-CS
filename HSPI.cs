@@ -19,10 +19,10 @@ namespace HSPI_HomeSeerSamplePlugin {
         public override string Name { get; } = "Sample Plugin";
         protected override string SettingsFileName { get; } = "HomeSeerSamplePlugin.ini";
 
+        public override bool HasSettings { get; } = true;
+
         #endregion
-
-        #region Constructor
-
+        
         public HSPI() : base() {
             //Initialize settings pages
             //Build Settings Page 1
@@ -102,8 +102,6 @@ namespace HSPI_HomeSeerSamplePlugin {
             //Initialize feature pages
         }
 
-        #endregion
-
         protected override void Initialize() {
             //Default behavior is sufficient
             Console.WriteLine("Initialized");
@@ -114,9 +112,8 @@ namespace HSPI_HomeSeerSamplePlugin {
             return jsonSettingsPages;
         }
 
-        public override bool SaveJuiSettingsPages(List<string> pages) {
-            foreach (var jsonPageDelta in pages) {
-                var pageDelta = Page.Factory.FromJsonString(jsonPageDelta);
+        protected override bool OnSettingsChange(List<Page> pages) {
+            foreach (var pageDelta in pages) {
                 var page = SettingsPages[SettingsPageIndexes[pageDelta.Id]];
                 foreach (var settingDelta in pageDelta.Views) {
                     //process settings changes

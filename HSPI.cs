@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Reflection;
 using HomeSeer.Jui.Types;
 using HomeSeer.Jui.Views;
 using HomeSeer.PluginSdk;
+// ReSharper disable IdentifierTypo
 
 namespace HSPI_HomeSeerSamplePlugin {
 
@@ -19,11 +18,11 @@ namespace HSPI_HomeSeerSamplePlugin {
         public override string Name { get; } = "Sample Plugin";
         protected override string SettingsFileName { get; } = "HomeSeerSamplePlugin.ini";
 
-        public override bool HasSettings { get; } = true;
+        public override bool HasSettings => (Settings?.Count ?? 0) > 0;
 
         #endregion
         
-        public HSPI() : base() {
+        public HSPI() {
             //Initialize settings pages
             //Build Settings Page 1
             var pageId = "settings-page1";
@@ -46,8 +45,7 @@ namespace HSPI_HomeSeerSamplePlugin {
             settingsPage1.AddView(sampleToggle1);
             settingsPage1.AddView(sampleSelectList1);
             settingsPage1.AddView(sampleButton1);
-            SettingsPageIndexes.Add(settingsPage1.Id, SettingsPages.Count);
-            SettingsPages.Add(settingsPage1);
+            Settings.Add(settingsPage1);
             //Build Settings Page 2
             pageId = "settings-page2";
             var settingsPage2 = Page.Factory.CreateSettingPage(pageId, "Page 2");
@@ -68,13 +66,12 @@ namespace HSPI_HomeSeerSamplePlugin {
             var sampleSelectList2 =
                 new SelectListView(new StringBuilder(pageId).Append(".sampleselectlist2").ToString(),
                                    "Sample Select List 2",
-                                   sampleSelectListOptions, ESelectListType.RadioList, 0);
+                                   sampleSelectListOptions, ESelectListType.RadioList);
 
             settingsPage2.AddView(sampleViewGroup1);
             settingsPage2.AddView(sampleLabel2);
             settingsPage2.AddView(sampleSelectList2);
-            SettingsPageIndexes.Add(settingsPage2.Id, SettingsPages.Count);
-            SettingsPages.Add(settingsPage2);
+            Settings.Add(settingsPage2);
             //Build Settings Page 3
             pageId = "settings-page3";
             var settingsPage3 = Page.Factory.CreateSettingPage(pageId, "Page 3");
@@ -97,8 +94,7 @@ namespace HSPI_HomeSeerSamplePlugin {
             settingsPage3.AddView(sampleInput4);
             settingsPage3.AddView(sampleInput5);
             settingsPage3.AddView(sampleInput6);
-            SettingsPageIndexes.Add(settingsPage3.Id, SettingsPages.Count);
-            SettingsPages.Add(settingsPage3);
+            Settings.Add(settingsPage3);
             //Initialize feature pages
         }
 
@@ -107,14 +103,9 @@ namespace HSPI_HomeSeerSamplePlugin {
             Console.WriteLine("Initialized");
         }
 
-        public override List<string> GetJuiSettingsPages() {
-            var jsonSettingsPages = SettingsPages.Select(p => p.ToJsonString()).ToList();
-            return jsonSettingsPages;
-        }
-
         protected override bool OnSettingsChange(List<Page> pages) {
             foreach (var pageDelta in pages) {
-                var page = SettingsPages[SettingsPageIndexes[pageDelta.Id]];
+                var page = Settings[pageDelta.Id];
                 foreach (var settingDelta in pageDelta.Views) {
                     //process settings changes
                     page.UpdateViewById(settingDelta);
@@ -124,6 +115,10 @@ namespace HSPI_HomeSeerSamplePlugin {
                             continue;
                         }
 
+                        //TODO react to settings change
+                        
+                        
+                        
                         //TODO revise INI setting saving
                         HomeSeerSystem.SaveINISetting(SettingsSectionName, settingDelta.Id, newValue, SettingsFileName);
                     }
@@ -134,34 +129,33 @@ namespace HSPI_HomeSeerSamplePlugin {
                 }
 
                 //Make sure the new state is stored
-                SettingsPages[SettingsPageIndexes[pageDelta.Id]] = page;
+                Settings[pageDelta.Id] = page;
             }
 
-            //Return the new state of the settings pages
-            //var jsonSettingsPages = SettingsPages.Select(p => p.ToJsonString()).ToList();
             return true;
         }
 
         //TODO clean up the documentation here to better indicate how it should be used
-        public override InterfaceStatus InterfaceStatus() {
-            //TODO handle status
-            var intStat = new InterfaceStatus { intStatus = Constants.enumInterfaceStatus.OK };
-            return intStat;
+        public override PluginStatus OnStatusCheck() {
+            return PluginStatus.OK();
         }
 
+        
         // sample functions and properties that can be called from HS, and a HTML page
 
-
-        // sample function with one parameter
-        // on the HTML page call this with:
-        // {{plugin_function 'homeseer-sample-plugin' 'MyCustomFunction' ['1']}}
-        public string MyCustomFunction(string sParm)
-        {
+        /// <summary>
+        /// sample function with one parameter
+        /// on the HTML page call this with:
+        /// {{plugin_function 'homeseer-sample-plugin' 'MyCustomFunction' ['1']}}
+        /// </summary>
+        public string MyCustomFunction(string param) {
             return "1234";
         }
 
-        // sample property that returns a string
-        // on the HTML page call this with:
+        /// <summary>
+        /// sample property that returns a string
+        /// on the HTML page call this with:
+        /// </summary>
         public string MyCustomProperty { get; } = "Sample property";
 
 

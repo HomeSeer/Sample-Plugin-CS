@@ -104,7 +104,6 @@ namespace HSPI_HomeSeerSamplePlugin {
             //Initialize feature pages            
             HomeSeerSystem.RegisterFeaturePage(ID, "sample-plugin-feature.html", "Sample Feature Page 1");
             HomeSeerSystem.RegisterFeaturePage(ID, "sample-guided-process.html", "Sample Guided Process");
-            //HomeSeerSystem.RegisterPage()
             Console.WriteLine("Initialized");
         }
 
@@ -193,15 +192,24 @@ namespace HSPI_HomeSeerSamplePlugin {
 
         public override string PostBackProc(string page, string data, string user, int userRights) {
             var response = "";
-            
-            try {
-                var postData = JsonConvert.DeserializeObject<PostData>(data);
-                if (postData.PageId != "sample-guided-process") {
-                    return response;
-                }
-                
-                postData.InternalData = JsonConvert.DeserializeObject<PostData.SampleInternalData>(postData.Data);
-                var colorList = new List<string> {
+
+            switch(page)
+            {
+                case "sample-plugin-feature.html":
+                    // use default ajax handler to update 3 divs
+                    return "['timediv', '" + "Saved at " + DateTime.Now.ToString() + "','div2','Save OK','main_content','']";
+                    
+                case "sample-guided-process.html":
+                    try
+                    {
+                        var postData = JsonConvert.DeserializeObject<PostData>(data);
+                        if (postData.PageId != "sample-guided-process")
+                        {
+                            return response;                                                                                       
+                        }
+
+                        postData.InternalData = JsonConvert.DeserializeObject<PostData.SampleInternalData>(postData.Data);
+                        var colorList = new List<string> {
                                                      "Red",
                                                      "Orange",
                                                      "Yellow",
@@ -210,14 +218,21 @@ namespace HSPI_HomeSeerSamplePlugin {
                                                      "Indigo",
                                                      "Violet"
                                                  };
-                var color = colorList[postData.InternalData.ColorIndex];
-                response = "You said " + postData.InternalData.TextValue + " and selected " + color;
+                        var color = colorList[postData.InternalData.ColorIndex];
+                        response = "You said " + postData.InternalData.TextValue + " and selected " + color;
+
+                    }
+                    catch (JsonSerializationException exception)
+                    {
+                        response = "error";
+                    }
+
+                    return response;
+                    break;
             }
-            catch (JsonSerializationException exception) {
-                response = "error";
-            }
-            
             return response;
+            
+            
         }
 
     }

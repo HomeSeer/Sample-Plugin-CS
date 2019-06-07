@@ -50,12 +50,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HSPI.cs" />
+    <Compile Include="PostData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\HomeSeer\HomeSeer\html\homeseer-sample-plugin\jui.html" />
+    <Content Include="..\HomeSeer\HomeSeer\html\homeseer-sample-plugin\sample-guided-process.html" />
+    <Content Include="..\HomeSeer\HomeSeer\html\homeseer-sample-plugin\sample-plugin-feature.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

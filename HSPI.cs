@@ -4,6 +4,8 @@ using System.Text;
 using HomeSeer.Jui.Types;
 using HomeSeer.Jui.Views;
 using HomeSeer.PluginSdk;
+using Newtonsoft.Json;
+
 // ReSharper disable IdentifierTypo
 
 namespace HSPI_HomeSeerSamplePlugin {
@@ -98,9 +100,11 @@ namespace HSPI_HomeSeerSamplePlugin {
         }
 
         protected override void Initialize() {
+            Console.WriteLine("Registering feature pages");
             //Initialize feature pages            
             HomeSeerSystem.RegisterFeaturePage(ID, "sample-plugin-feature.html", "Sample Feature Page 1");
-            //Default behavior is sufficient
+            HomeSeerSystem.RegisterFeaturePage(ID, "sample-guided-process.html", "Sample Guided Process");
+            //HomeSeerSystem.RegisterPage()
             Console.WriteLine("Initialized");
         }
 
@@ -152,6 +156,34 @@ namespace HSPI_HomeSeerSamplePlugin {
         public string MyCustomFunction(string param) {
             return "1234";
         }
+        
+        public string GetSampleSelectList() {
+            var sb = new StringBuilder("<select class=\"mdb-select md-form\" id=\"step3SampleSelectList\">");
+            sb.Append(Environment.NewLine);
+            sb.Append("<option value=\"\" disabled selected>Color</option>");
+            sb.Append(Environment.NewLine);
+            var colorList = new List<string> {
+                                "Red",
+                                "Orange",
+                                "Yellow",
+                                "Green",
+                                "Blue",
+                                "Indigo",
+                                "Violet"
+                            };
+            for (var i = 0; i < colorList.Count; i++) {
+                var color = colorList[i];
+                sb.Append("<option value=\"");
+                sb.Append(i);
+                sb.Append("\">");
+                sb.Append(color);
+                sb.Append("</option>");
+                sb.Append(Environment.NewLine);
+            }
+
+            sb.Append("</select>");
+            return sb.ToString();
+        }
 
         /// <summary>
         /// sample property that returns a string
@@ -159,7 +191,34 @@ namespace HSPI_HomeSeerSamplePlugin {
         /// </summary>
         public string MyCustomProperty { get; } = "Sample property";
 
-
+        public override string PostBackProc(string page, string data, string user, int userRights) {
+            var response = "";
+            
+            try {
+                var postData = JsonConvert.DeserializeObject<PostData>(data);
+                if (postData.PageId != "sample-guided-process") {
+                    return response;
+                }
+                
+                postData.InternalData = JsonConvert.DeserializeObject<PostData.SampleInternalData>(postData.Data);
+                var colorList = new List<string> {
+                                                     "Red",
+                                                     "Orange",
+                                                     "Yellow",
+                                                     "Green",
+                                                     "Blue",
+                                                     "Indigo",
+                                                     "Violet"
+                                                 };
+                var color = colorList[postData.InternalData.ColorIndex];
+                response = "You said " + postData.InternalData.TextValue + " and selected " + color;
+            }
+            catch (JsonSerializationException exception) {
+                response = "error";
+            }
+            
+            return response;
+        }
 
     }
 

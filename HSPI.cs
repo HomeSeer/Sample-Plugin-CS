@@ -94,11 +94,12 @@ namespace HSPI_HomeSeerSamplePlugin {
             settingsPage3.AddView(sampleInput4);
             settingsPage3.AddView(sampleInput5);
             settingsPage3.AddView(sampleInput6);
-            Settings.Add(settingsPage3);
-            //Initialize feature pages
+            Settings.Add(settingsPage3);            
         }
 
         protected override void Initialize() {
+            //Initialize feature pages            
+            HomeSeerSystem.RegisterFeaturePage(ID, "sample-plugin-feature.html", "Sample Feature Page 1");
             //Default behavior is sufficient
             Console.WriteLine("Initialized");
         }

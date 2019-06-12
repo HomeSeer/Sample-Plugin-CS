@@ -237,20 +237,21 @@ namespace HSPI_HomeSeerSamplePlugin {
 
         public override string PostBackProc(string page, string data, string user, int userRights) {
             Console.WriteLine("PostBack");
+            //TODO expand on the response content
             var response = "";
 
             switch(page) {
                 case "sample-plugin-feature.html":
                     // use default ajax handler to update 3 divs
-                    return "['timediv', '" + "Saved at " + DateTime.Now.ToString() + "','div2','Save OK','main_content','']";
+                    response = "['timediv', '" + "Saved at " + DateTime.Now.ToString() + "','div2','Save OK','main_content','']";
+                    break;
                     
                 case "sample-guided-process.html":
                     try {
-                        var postData = JsonConvert.DeserializeObject<PostData>(data);
+                        var postData = JsonConvert.DeserializeObject<SampleGuidedProcessData>(data);
 
                         Console.WriteLine("Post back from sample-guided-process page");
                 
-                        postData.InternalData = JsonConvert.DeserializeObject<PostData.SampleInternalData>(postData.Data);
                         var colorList = new List<string> {
                                                              "Red",
                                                              "Orange",
@@ -260,16 +261,20 @@ namespace HSPI_HomeSeerSamplePlugin {
                                                              "Indigo",
                                                              "Violet"
                                                          };
-                        var color = colorList[postData.InternalData.ColorIndex];
+                        var color = colorList[postData.ColorIndex];
                 
-                        response = postData.InternalData.TextValue.ToLower().Contains("mushroom") ? "It's a snake!" : "You said " + postData.InternalData.TextValue + " and selected " + color;
+                        response = postData.TextValue.ToLower().Contains("mushroom") ? "It's a snake!" : "You said " + postData.TextValue + " and selected " + color;
 
                     }
                     catch (JsonSerializationException exception) {
+                        Console.WriteLine(exception.Message);
                         response = "error";
                     }
 
-                    return response;
+                    break;
+                default:
+                    response = "error";
+                    break;
             }
             return response;
         }

@@ -55,19 +55,19 @@ namespace HSPI_HomeSeerSamplePlugin {
                                              null,
                                              "These control the list of colors presented for selection in the Sample Guided Process feature page.");
             var redToggle = new ToggleView(new StringBuilder(pageId).Append(".red").ToString(),
-                                               "Red");
+                                               "Red", true);
             var orangeToggle = new ToggleView(new StringBuilder(pageId).Append(".orange").ToString(),
-                                               "Orange");
+                                               "Orange", true);
             var yellowToggle = new ToggleView(new StringBuilder(pageId).Append(".yellow").ToString(),
-                                               "Yellow");
+                                               "Yellow", true);
             var greenToggle = new ToggleView(new StringBuilder(pageId).Append(".green").ToString(),
-                                              "Green");
+                                              "Green", true);
             var blueToggle = new ToggleView(new StringBuilder(pageId).Append(".blue").ToString(),
-                                              "Blue");
+                                              "Blue", true);
             var indigoToggle = new ToggleView(new StringBuilder(pageId).Append(".indigo").ToString(),
-                                              "Indigo");
+                                              "Indigo", true);
             var violetToggle = new ToggleView(new StringBuilder(pageId).Append(".violet").ToString(),
-                                              "Violet");
+                                              "Violet", true);
             var sampleViewGroup1 = new ViewGroup(new StringBuilder(pageId).Append(".colorgroup").ToString(),
                                                  "Available colors");
             sampleViewGroup1.AddView(redToggle);
@@ -213,7 +213,7 @@ namespace HSPI_HomeSeerSamplePlugin {
            
             for (var i = 0; i < colorList.Count; i++) {
                 var color = colorList[i];
-                if (string.IsNullOrWhiteSpace(color)) {
+                if (string.IsNullOrEmpty(color)) {
                     continue;
                 }
                 

@@ -21,7 +21,7 @@ namespace HSPI_HomeSeerSamplePlugin {
         protected override string SettingsFileName { get; } = "HomeSeerSamplePlugin.ini";
 
         public override bool HasSettings => (Settings?.Count ?? 0) > 0;
-
+        
         #endregion
         
         public HSPI() {
@@ -51,18 +51,33 @@ namespace HSPI_HomeSeerSamplePlugin {
             //Build Settings Page 2
             pageId = "settings-page2";
             var settingsPage2 = Page.Factory.CreateSettingPage(pageId, "Page 2");
-            var sampleToggle2 = new ToggleView(new StringBuilder(pageId).Append(".sampletoggle2").ToString(),
-                                               "Sample Toggle 2");
-            var sampleToggle3 = new ToggleView(new StringBuilder(pageId).Append(".sampletoggle3").ToString(),
-                                               "Sample Toggle 3");
-            var sampleToggle4 = new ToggleView(new StringBuilder(pageId).Append(".sampletoggle4").ToString(),
-                                               "Sample Toggle 4");
-            var sampleViewGroup1 = new ViewGroup(new StringBuilder(pageId).Append(".sampleviewgroup1").ToString(),
-                                                 "Sample View Group 1");
-            sampleViewGroup1.AddView(sampleToggle2);
-            sampleViewGroup1.AddView(sampleToggle3);
-            sampleViewGroup1.AddView(sampleToggle4);
-            var sampleLabel2 = new LabelView(new StringBuilder(pageId).Append(".samplelabel2").ToString(),
+            var sampleLabel2 = new LabelView(new StringBuilder(pageId).Append(".colorlabel").ToString(),
+                                             null,
+                                             "These control the list of colors presented for selection in the Sample Guided Process feature page.");
+            var redToggle = new ToggleView(new StringBuilder(pageId).Append(".red").ToString(),
+                                               "Red");
+            var orangeToggle = new ToggleView(new StringBuilder(pageId).Append(".orange").ToString(),
+                                               "Orange");
+            var yellowToggle = new ToggleView(new StringBuilder(pageId).Append(".yellow").ToString(),
+                                               "Yellow");
+            var greenToggle = new ToggleView(new StringBuilder(pageId).Append(".green").ToString(),
+                                              "Green");
+            var blueToggle = new ToggleView(new StringBuilder(pageId).Append(".blue").ToString(),
+                                              "Blue");
+            var indigoToggle = new ToggleView(new StringBuilder(pageId).Append(".indigo").ToString(),
+                                              "Indigo");
+            var violetToggle = new ToggleView(new StringBuilder(pageId).Append(".violet").ToString(),
+                                              "Violet");
+            var sampleViewGroup1 = new ViewGroup(new StringBuilder(pageId).Append(".colorgroup").ToString(),
+                                                 "Available colors");
+            sampleViewGroup1.AddView(redToggle);
+            sampleViewGroup1.AddView(orangeToggle);
+            sampleViewGroup1.AddView(yellowToggle);
+            sampleViewGroup1.AddView(greenToggle);
+            sampleViewGroup1.AddView(blueToggle);
+            sampleViewGroup1.AddView(indigoToggle);
+            sampleViewGroup1.AddView(violetToggle);
+            var sampleLabel3 = new LabelView(new StringBuilder(pageId).Append(".samplelabel3").ToString(),
                                              null,
                                              "This is a sample label without a title");
             var sampleSelectList2 =
@@ -71,24 +86,24 @@ namespace HSPI_HomeSeerSamplePlugin {
                                    sampleSelectListOptions, ESelectListType.RadioList);
 
             settingsPage2.AddView(sampleViewGroup1);
-            settingsPage2.AddView(sampleLabel2);
+            settingsPage2.AddView(sampleLabel3);
             settingsPage2.AddView(sampleSelectList2);
             Settings.Add(settingsPage2);
             //Build Settings Page 3
             pageId = "settings-page3";
             var settingsPage3 = Page.Factory.CreateSettingPage(pageId, "Page 3");
             var sampleInput1 = new InputView(new StringBuilder(pageId).Append(".sampleinput1").ToString(),
-                                             "Sample Input 1");
+                                             "Sample Text Input");
             var sampleInput2 = new InputView(new StringBuilder(pageId).Append(".sampleinput2").ToString(),
-                                             "Sample Input 2", EInputType.Number);
+                                             "Sample Number Input", EInputType.Number);
             var sampleInput3 = new InputView(new StringBuilder(pageId).Append(".sampleinput3").ToString(),
-                                             "Sample Input 3", EInputType.Email);
+                                             "Sample Email Input", EInputType.Email);
             var sampleInput4 = new InputView(new StringBuilder(pageId).Append(".sampleinput4").ToString(),
-                                             "Sample Input 4", EInputType.Url);
+                                             "Sample URL Input", EInputType.Url);
             var sampleInput5 = new InputView(new StringBuilder(pageId).Append(".sampleinput5").ToString(),
-                                             "Sample Input 5", EInputType.Password);
+                                             "Sample Password Input", EInputType.Password);
             var sampleInput6 = new InputView(new StringBuilder(pageId).Append(".sampleinput6").ToString(),
-                                             "Sample Input 6", EInputType.Decimal);
+                                             "Sample Decimal Input", EInputType.Decimal);
 
             settingsPage3.AddView(sampleInput1);
             settingsPage3.AddView(sampleInput2);
@@ -158,21 +173,51 @@ namespace HSPI_HomeSeerSamplePlugin {
         }
         
         public string GetSampleSelectList() {
+            Console.WriteLine("Getting sample select list for sample-guided-process page");
             var sb = new StringBuilder("<select class=\"mdb-select md-form\" id=\"step3SampleSelectList\">");
             sb.Append(Environment.NewLine);
             sb.Append("<option value=\"\" disabled selected>Color</option>");
             sb.Append(Environment.NewLine);
-            var colorList = new List<string> {
-                                "Red",
-                                "Orange",
-                                "Yellow",
-                                "Green",
-                                "Blue",
-                                "Indigo",
-                                "Violet"
-                            };
+            
+            var colorList = new List<string>();
+
+            try {
+                var colorSettings = Settings["settings-page2"].GetViewById("settings-page2.colorgroup");
+                if (!(colorSettings is ViewGroup colorViewGroup)) {
+                    throw new ViewTypeMismatchException("No View Group found containing colors");
+                }
+
+                foreach (var view in colorViewGroup.Views) {
+                    if (!(view is ToggleView colorView)) {
+                        continue;
+                    }
+
+                    if (!colorView.IsEnabled) {
+                        colorList.Add("");
+                    }
+                    
+                    colorList.Add(colorView.Name);
+                }
+            }
+            catch (Exception exception) {
+                Console.WriteLine(exception);
+                colorList = new List<string> {
+                                                 "Red",
+                                                 "Orange",
+                                                 "Yellow",
+                                                 "Green",
+                                                 "Blue",
+                                                 "Indigo",
+                                                 "Violet"
+                                             };
+            }
+           
             for (var i = 0; i < colorList.Count; i++) {
                 var color = colorList[i];
+                if (string.IsNullOrWhiteSpace(color)) {
+                    continue;
+                }
+                
                 sb.Append("<option value=\"");
                 sb.Append(i);
                 sb.Append("\">");
@@ -192,6 +237,7 @@ namespace HSPI_HomeSeerSamplePlugin {
         public string MyCustomProperty { get; } = "Sample property";
 
         public override string PostBackProc(string page, string data, string user, int userRights) {
+            Console.WriteLine("PostBack");
             var response = "";
             
             try {
@@ -199,6 +245,8 @@ namespace HSPI_HomeSeerSamplePlugin {
                 if (postData.PageId != "sample-guided-process") {
                     return response;
                 }
+                
+                Console.WriteLine("Post back from sample-guided-process page");
                 
                 postData.InternalData = JsonConvert.DeserializeObject<PostData.SampleInternalData>(postData.Data);
                 var colorList = new List<string> {
@@ -211,7 +259,8 @@ namespace HSPI_HomeSeerSamplePlugin {
                                                      "Violet"
                                                  };
                 var color = colorList[postData.InternalData.ColorIndex];
-                response = "You said " + postData.InternalData.TextValue + " and selected " + color;
+                
+                response = postData.InternalData.TextValue.ToLower().Contains("mushroom") ? "It's a snake!" : "You said " + postData.InternalData.TextValue + " and selected " + color;
             }
             catch (JsonSerializationException exception) {
                 response = "error";

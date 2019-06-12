@@ -119,7 +119,6 @@ namespace HSPI_HomeSeerSamplePlugin {
             //Initialize feature pages            
             HomeSeerSystem.RegisterFeaturePage(ID, "sample-plugin-feature.html", "Sample Feature Page 1");
             HomeSeerSystem.RegisterFeaturePage(ID, "sample-guided-process.html", "Sample Guided Process");
-            //HomeSeerSystem.RegisterPage()
             Console.WriteLine("Initialized");
         }
 
@@ -239,33 +238,39 @@ namespace HSPI_HomeSeerSamplePlugin {
         public override string PostBackProc(string page, string data, string user, int userRights) {
             Console.WriteLine("PostBack");
             var response = "";
-            
-            try {
-                var postData = JsonConvert.DeserializeObject<PostData>(data);
-                if (postData.PageId != "sample-guided-process") {
+
+            switch(page) {
+                case "sample-plugin-feature.html":
+                    // use default ajax handler to update 3 divs
+                    return "['timediv', '" + "Saved at " + DateTime.Now.ToString() + "','div2','Save OK','main_content','']";
+                    
+                case "sample-guided-process.html":
+                    try {
+                        var postData = JsonConvert.DeserializeObject<PostData>(data);
+
+                        Console.WriteLine("Post back from sample-guided-process page");
+                
+                        postData.InternalData = JsonConvert.DeserializeObject<PostData.SampleInternalData>(postData.Data);
+                        var colorList = new List<string> {
+                                                             "Red",
+                                                             "Orange",
+                                                             "Yellow",
+                                                             "Green",
+                                                             "Blue",
+                                                             "Indigo",
+                                                             "Violet"
+                                                         };
+                        var color = colorList[postData.InternalData.ColorIndex];
+                
+                        response = postData.InternalData.TextValue.ToLower().Contains("mushroom") ? "It's a snake!" : "You said " + postData.InternalData.TextValue + " and selected " + color;
+
+                    }
+                    catch (JsonSerializationException exception) {
+                        response = "error";
+                    }
+
                     return response;
-                }
-                
-                Console.WriteLine("Post back from sample-guided-process page");
-                
-                postData.InternalData = JsonConvert.DeserializeObject<PostData.SampleInternalData>(postData.Data);
-                var colorList = new List<string> {
-                                                     "Red",
-                                                     "Orange",
-                                                     "Yellow",
-                                                     "Green",
-                                                     "Blue",
-                                                     "Indigo",
-                                                     "Violet"
-                                                 };
-                var color = colorList[postData.InternalData.ColorIndex];
-                
-                response = postData.InternalData.TextValue.ToLower().Contains("mushroom") ? "It's a snake!" : "You said " + postData.InternalData.TextValue + " and selected " + color;
             }
-            catch (JsonSerializationException exception) {
-                response = "error";
-            }
-            
             return response;
         }
 

@@ -10,32 +10,61 @@ using Newtonsoft.Json;
 
 namespace HSPI_HomeSeerSamplePlugin {
 
+    /// <inheritdoc />
+    /// <summary>
+    /// The plugin class for HomeSeer Sample Plugin that implements the <see cref="AbstractPlugin"/> base class.
+    /// </summary>
+    /// <remarks>
+    /// This class is accessed by HomeSeer and requires that its name be "HSPI" and be located in a namespace
+    ///  that corresponds to the name of the executable. For this plugin, "HomeSeerSamplePlugin" the executable
+    ///  file is "HSPI_HomeSeerSamplePlugin.exe" and this class is HSPI_HomeSeerSamplePlugin.HSPI
+    /// <para>
+    /// If HomeSeer is unable to find this class, the plugin will not start.
+    /// </para>
+    /// </remarks>
     public class HSPI : AbstractPlugin {
 
 
         #region Properties
-        //TODO feature pages
-
-        public override string ID { get; } = "homeseer-sample-plugin";
-        public override string Name { get; } = "Sample Plugin";
-        protected override string SettingsFileName { get; } = "HomeSeerSamplePlugin.ini";
-
-        public override bool HasSettings => (Settings?.Count ?? 0) > 0;
-
+        
+        /// <summary>
+        /// The list of colors used throughout the plugin
+        /// </summary>
         public static List<string> ColorList { get; } = new List<string> {
-                                                 "Red",
-                                                 "Orange",
-                                                 "Yellow",
-                                                 "Green",
-                                                 "Blue",
-                                                 "Indigo",
-                                                 "Violet"
-                                             };
+                                                                             "Red",
+                                                                             "Orange",
+                                                                             "Yellow",
+                                                                             "Green",
+                                                                             "Blue",
+                                                                             "Indigo",
+                                                                             "Violet"
+                                                                         };
+
+        /// <inheritdoc />
+        /// <remarks>
+        /// This ID is used to identify the plugin and should be unique across all plugins
+        /// <para>
+        /// All HTML feature pages will need to be located in HomeSeer's html directory
+        ///  in a unique folder for the plugin that matches this ID. (Ex. \Homeseer\html\homeseer-sample-plugin\)
+        /// </para>
+        /// </remarks>
+        public override string Id { get; } = "homeseer-sample-plugin";
+        
+        /// <inheritdoc />
+        /// <remarks>
+        /// This is the readable name for the plugin that is displayed throughout HomeSeer
+        /// </remarks>
+        public override string Name { get; } = "Sample Plugin";
+        
+        protected override string SettingsFileName { get; } = "HomeSeerSamplePlugin.ini";
 
         #endregion
 
         public HSPI() {
-            //Initialize settings pages
+            //Initialize the plugin 
+            //Setup anything that needs to be configured before a connection to HomeSeer is established
+            // like building the settings pages
+            
             //Build Settings Page 1
             var pageId = "settings-page1";
             var settingsPage1 = Page.Factory.CreateSettingPage(pageId, "Page 1");
@@ -127,8 +156,8 @@ namespace HSPI_HomeSeerSamplePlugin {
         protected override void Initialize() {
             Console.WriteLine("Registering feature pages");
             //Initialize feature pages            
-            HomeSeerSystem.RegisterFeaturePage(ID, "sample-plugin-feature.html", "Sample Feature Page 1");
-            HomeSeerSystem.RegisterFeaturePage(ID, "sample-guided-process.html", "Sample Guided Process");
+            HomeSeerSystem.RegisterFeaturePage(Id, "sample-plugin-feature.html", "Sample Feature Page 1");
+            HomeSeerSystem.RegisterFeaturePage(Id, "sample-guided-process.html", "Sample Guided Process");
             Console.WriteLine("Initialized");
         }
 
@@ -166,6 +195,7 @@ namespace HSPI_HomeSeerSamplePlugin {
 
         //TODO clean up the documentation here to better indicate how it should be used
         public override PluginStatus OnStatusCheck() {
+            //Determine the state of your plugin
             return PluginStatus.OK();
         }
 
@@ -181,6 +211,10 @@ namespace HSPI_HomeSeerSamplePlugin {
             return "1234";
         }
         
+        /// <summary>
+        /// Called by the sample guided process feature page through a liquid tag to provide the list of available colors
+        /// </summary>
+        /// <returns>The HTML for the list of select list options</returns>
         public string GetSampleSelectList() {
             Console.WriteLine("Getting sample select list for sample-guided-process page");
             var sb = new StringBuilder("<select class=\"mdb-select md-form\" id=\"step3SampleSelectList\">");

@@ -21,9 +21,19 @@ namespace HSPI_HomeSeerSamplePlugin {
         protected override string SettingsFileName { get; } = "HomeSeerSamplePlugin.ini";
 
         public override bool HasSettings => (Settings?.Count ?? 0) > 0;
-        
+
+        public static List<string> ColorList { get; } = new List<string> {
+                                                 "Red",
+                                                 "Orange",
+                                                 "Yellow",
+                                                 "Green",
+                                                 "Blue",
+                                                 "Indigo",
+                                                 "Violet"
+                                             };
+
         #endregion
-        
+
         public HSPI() {
             //Initialize settings pages
             //Build Settings Page 1
@@ -111,7 +121,7 @@ namespace HSPI_HomeSeerSamplePlugin {
             settingsPage3.AddView(sampleInput4);
             settingsPage3.AddView(sampleInput5);
             settingsPage3.AddView(sampleInput6);
-            Settings.Add(settingsPage3);            
+            Settings.Add(settingsPage3);
         }
 
         protected override void Initialize() {
@@ -190,25 +200,13 @@ namespace HSPI_HomeSeerSamplePlugin {
                     if (!(view is ToggleView colorView)) {
                         continue;
                     }
-
-                    if (!colorView.IsEnabled) {
-                        colorList.Add("");
-                    }
                     
-                    colorList.Add(colorView.Name);
+                    colorList.Add(colorView.IsEnabled ? colorView.Name : "");
                 }
             }
             catch (Exception exception) {
                 Console.WriteLine(exception);
-                colorList = new List<string> {
-                                                 "Red",
-                                                 "Orange",
-                                                 "Yellow",
-                                                 "Green",
-                                                 "Blue",
-                                                 "Indigo",
-                                                 "Violet"
-                                             };
+                colorList = ColorList;
             }
            
             for (var i = 0; i < colorList.Count; i++) {
@@ -251,19 +249,7 @@ namespace HSPI_HomeSeerSamplePlugin {
                         var postData = JsonConvert.DeserializeObject<SampleGuidedProcessData>(data);
 
                         Console.WriteLine("Post back from sample-guided-process page");
-                
-                        var colorList = new List<string> {
-                                                             "Red",
-                                                             "Orange",
-                                                             "Yellow",
-                                                             "Green",
-                                                             "Blue",
-                                                             "Indigo",
-                                                             "Violet"
-                                                         };
-                        var color = colorList[postData.ColorIndex];
-                
-                        response = postData.TextValue.ToLower().Contains("mushroom") ? "It's a snake!" : "You said " + postData.TextValue + " and selected " + color;
+                        response = postData.GetResponse();
 
                     }
                     catch (JsonSerializationException exception) {

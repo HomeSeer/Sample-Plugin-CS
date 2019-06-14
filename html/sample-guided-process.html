@@ -49,8 +49,10 @@
                     <div data-step-label="Select an item" class="step-title waves-effect waves-dark">Step 3</div>
                     <div class="step-new-content">
                         Sometimes, you may need the user to select an option from a list that is dynamically driven by the state of the plugin.  This can be done using Liquid tags.  A Liquid tag calls a method in your plugin to inflate a section of HTML.  This select list was provided by the plugin method GetSampleSelectList()
-                        {{plugin_function 'homeseer-sample-plugin' 'GetSampleSelectList' []}}
-                        <!--<select class="mdb-select md-form" id="step3SampleSelectList"> 
+                        {{plugin_function 'HomeSeerSamplePlugin' 'GetSampleSelectList' []}}
+                        <!-- EXAMPLE
+                        
+                        <select class="mdb-select md-form" id="step3SampleSelectList"> 
                             <option value="" disabled selected>Color</option>                             
                             <option value="0">Red</option>                             
                             <option value="1">Orange</option>                             
@@ -59,7 +61,8 @@
                             <option value="4">Blue</option>
                             <option value="5">Indigo</option>
                             <option value="6">Violet</option>
-                        </select>-->
+                        </select>
+                        -->
                         <div class="step-actions">
                             <button class="waves-effect waves-dark btn btn-sm btn-secondary previous-step">BACK</button>
                             <button class="waves-effect waves-dark btn btn-sm btn-primary next-step">CONTINUE</button>
@@ -94,7 +97,6 @@
         {{includefile 'bootstrap/js/page_common.js'}}
         <script type="text/javascript" src="../bootstrap/js/steppers.min.js"></script>
         <script type="text/javascript" src="../js/jquery.validate.min.js"></script>
-        <script type="text/javascript" src="../bootstrap/js/jui.js"></script>
         <script type="text/JavaScript">
           $(document).ready(function () {
             $('.stepper').mdbStepper();
@@ -128,7 +130,7 @@
             	$.ajax({
                     type: "POST",
                     async: "true",
-                    url: '/homeseer-sample-plugin/sample-guided-process.html',
+                    url: '/HomeSeerSamplePlugin/sample-guided-process.html',
                     cache: false,
                     data: jsonData,
                     success: function(response){

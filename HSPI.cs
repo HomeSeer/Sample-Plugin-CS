@@ -162,8 +162,9 @@ namespace HSPI_HomeSeerSamplePlugin {
         protected override void Initialize() {
             Console.WriteLine("Registering feature pages");
             //Initialize feature pages            
-            HomeSeerSystem.RegisterFeaturePage(Id, "sample-plugin-feature.html", "Sample Feature Page 1");
             HomeSeerSystem.RegisterFeaturePage(Id, "sample-guided-process.html", "Sample Guided Process");
+            HomeSeerSystem.RegisterFeaturePage(Id, "sample-blank.html", "Sample Blank Page");
+            HomeSeerSystem.RegisterFeaturePage(Id, "sample-plugin-feature.html", "Sample Feature Page 1");
             Console.WriteLine("Initialized");
         }
 

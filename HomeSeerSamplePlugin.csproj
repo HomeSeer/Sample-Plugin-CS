@@ -78,7 +78,10 @@
   or within corresponding subdirectories (ex. html\js\ or html\css\)
   -->
   <ItemGroup>
-    <HtmlFiles Include="html\*"/>
+    <HtmlFiles Include="html\*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="html\sample-blank.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -89,7 +92,6 @@
 	</Target>
 	-->
   <Target Name="AfterBuild">
-    <Copy SourceFiles="@(HtmlFiles)"
-          DestinationFolder="$(OutputPath)\html\$(PluginId)"/>
+    <Copy SourceFiles="@(HtmlFiles)" DestinationFolder="$(OutputPath)\html\$(PluginId)" />
   </Target>
 </Project>

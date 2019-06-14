@@ -1,0 +1,126 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+    <head> 
+		<meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
+        <meta name="description" content="">
+        <meta name="author" content="HomeSeer"> 
+        
+        {{includefile 'bootstrap/css/page_common.css'}}
+        
+        <title>Sample Plugin Feature Page 1</title>
+        
+    </head>     
+    <body class="homeseer-skin"> 
+        
+        {{includefile 'header.html'}}
+        {{includefile 'navbar.html'}}
+		
+		<div class="container" id="main_content">            
+			<form id="pluginform">
+				<div id="sample-page1.samplelabel1" class="jui-view">
+                    <div id="sample-page1.samplelabel1.title" class="jui-title"><small>Sample Label 1</small></div>
+					<p id="sample-page1.samplelabel1.value">This is a sample label with a title</p>
+				</div>
+				<div class="jui-view jui-toggle">
+					<label class="jui-toggle-text" for="sample-page1.sampletoggle1">Sample Toggle 1</label>
+					<span class="switch jui-toggle-control"><label><input type="checkbox" class="jui-input" id="sample-page1.sampletoggle1"><span class="lever"/></label></span>
+				</div>
+				<div class="jui-view">
+					<select class="mdb-select md-form jui-input">
+						<option value="" disabled selected>Sample Select List 1</option>
+						<option value="Option 1">Option 1</option>
+						<option value="Option 2">Option 2</option>
+						<option value="Option 3">Option 3</option>
+					</select>
+				</div>
+				<button class="btn btn-primary btn-block" type="button" style="margin-top: 16px;" id="sample-page1.samplebutton1">Sample Button 1</button>
+				<div id="sample-page1.sampleviewgroup1" class="jui-view">
+					<div class="jui-view jui-toggle">
+						<label class="jui-toggle-text" for="sample-page1.sampletoggle2">Sample Toggle 2</label>
+						<span class="switch jui-toggle-control"><label><input type="checkbox" class="jui-input" id="sample-page1.sampletoggle2"><span class="lever"/></label></span>
+					</div>
+					<div class="jui-view jui-toggle">
+						<label class="jui-toggle-text" for="sample-page1.sampletoggle3">Sample Toggle 3</label>
+						<span class="switch jui-toggle-control"><label><input type="checkbox" class="jui-input" id="sample-page1.sampletoggle3"><span class="lever"/></label></span>
+					</div>
+					<div class="jui-view jui-toggle">
+						<label class="jui-toggle-text" for="sample-page1.sampletoggle4">Sample Toggle 4</label>
+						<span class="switch jui-toggle-control"><label><input type="checkbox" class="jui-input" id="sample-page1.sampletoggle4"><span class="lever"/></label></span>
+					</div>
+				</div>
+				<div id="sample-page1.samplelabel2" class="jui-view">
+                    <div id="sample-page1.samplelabel2.title" class="jui-title"><small></small></div>
+					<p id="sample-page1.samplelabel2.value">This is a sample label without a title</p>
+				</div>
+				<div class="jui-view">
+					<hr/>
+                    <div id="sample-page1.sampleselectlist2.title" class="jui-title"><small>Sample Select List 2</small></div>
+						<div class="jui-toggle jui-selectlist-radio-option">
+							<label class="jui-toggle-text" for="sample-page1.sampleselectlist2.Option 1">Option 1</label>
+							<span class="form-check jui-toggle-control"><input type="radio" id="sample-page1.sampleselectlist2.Option 1" class="form-check-input jui-input" name="sample-page1.sampleselectlist2" checked="true"><span class="lever"/><label class="form-check-label jui-toggle-checkbox-label" for="sample-page1.sampleselectlist2.Option 1"/></span>
+						</div>
+						<div class="jui-toggle jui-selectlist-radio-option">
+							<label class="jui-toggle-text" for="sample-page1.sampleselectlist2.Option 2">Option 2</label>
+							<span class="form-check jui-toggle-control"><input type="radio" id="sample-page1.sampleselectlist2.Option 2" class="form-check-input jui-input" name="sample-page1.sampleselectlist2"><span class="lever"/><label class="form-check-label jui-toggle-checkbox-label" for="sample-page1.sampleselectlist2.Option 2"/></span>
+						</div>
+						<div class="jui-toggle jui-selectlist-radio-option">
+							<label class="jui-toggle-text" for="sample-page1.sampleselectlist2.Option 3">Option 3</label>
+							<span class="form-check jui-toggle-control"><input type="radio" id="sample-page1.sampleselectlist2.Option 3" class="form-check-input jui-input" name="sample-page1.sampleselectlist2"><span class="lever"/><label class="form-check-label jui-toggle-checkbox-label" for="sample-page1.sampleselectlist2.Option 3"/></span>
+						</div>
+					<hr/>
+				</div>
+				<div class="md-form md-outline jui-view">
+					<input type="text" id=" sample-page1.sampleinput1" class="form-control jui-input" value="">
+					<label for="sample-page1.sampleinput1" id="sample-page1.sampleinput1.hint">Sample Input 1</label>
+				</div>
+				<div class="md-form md-outline jui-view">
+					<input type="number" pattern="[0-9]*" d=" sample-page1.sampleinput2" class="form-control jui-input" value="">
+					<label for="sample-page1.sampleinput2" id="sample-page1.sampleinput2.hint">Sample Input 2</label>
+				</div>
+				<div class="md-form md-outline jui-view">
+					<input type="email" id=" sample-page1.sampleinput3" class="form-control jui-input" value="">
+					<label for="sample-page1.sampleinput3" id="sample-page1.sampleinput3.hint">Sample Input 3</label>
+				</div>
+				<div class="md-form md-outline jui-view">
+					<input type="url" id=" sample-page1.sampleinput4" class="form-control jui-input" value="">
+					<label for="sample-page1.sampleinput4" id="sample-page1.sampleinput4.hint">Sample Input 4</label>
+				</div>
+				<div class="md-form md-outline jui-view">
+					<input type="password" id=" sample-page1.sampleinput5" class="form-control jui-input" value="">
+					<label for="sample-page1.sampleinput5" id="sample-page1.sampleinput5.hint">Sample Input 5</label>
+				</div>
+				<div class="md-form md-outline jui-view">
+					<input type="text" pattern="[0-9.]*" id=" sample-page1.sampleinput6" class="form-control jui-input" value="">
+					<label for="sample-page1.sampleinput6" id="sample-page1.sampleinput6.hint">Sample Input 6</label>
+				</div>
+                <div class="modal-footer mt-3">
+                <button type="button" class="btn btn-primary" id="save_plugin_data">Save</button>
+            	</div>
+			</form>
+		</div>        
+        <div class="container">
+            <div id="timediv">                
+            </div>
+            <div id="div2">                
+            </div>
+        </div>
+        {{includefile 'bootstrap/js/page_common.js'}}
+        <script type="text/javascript">            
+        	$(document).ready(function() {
+           		docready();
+        	});
+            function after_postback() {
+                // code run after the ajax postback completes
+            }
+        	function docready() {
+            }
+            function ButtonClicked() {
+            	var fdata = $('#pluginform').serialize();
+                AjaxPost(fdata,"homeseer-sample-plugin/sample-plugin-feature.html");
+            }
+            $(document).on('click', 'button', ButtonClicked);
+        </script>
+    </body>     
+</html>

@@ -22,6 +22,7 @@ namespace HSPI_HomeSeerSamplePlugin {
     /// If HomeSeer is unable to find this class, the plugin will not start.
     /// </para>
     /// </remarks>
+    // ReSharper disable once InconsistentNaming
     public class HSPI : AbstractPlugin {
 
 
@@ -44,11 +45,16 @@ namespace HSPI_HomeSeerSamplePlugin {
         /// <remarks>
         /// This ID is used to identify the plugin and should be unique across all plugins
         /// <para>
-        /// All HTML feature pages will need to be located in HomeSeer's html directory
-        ///  in a unique folder for the plugin that matches this ID. (Ex. \Homeseer\html\homeseer-sample-plugin\)
+        /// This must match the MSBuild property $(PluginId) as this will be used to copy
+        ///  all of the HTML feature pages located in .\html\ to a relative directory
+        ///  within the HomeSeer html folder.
+        /// </para>
+        /// <para>
+        /// The relative address for all of the HTML pages will end up looking like this:
+        ///  ..\Homeseer\Homeseer\html\HomeSeerSamplePlugin\
         /// </para>
         /// </remarks>
-        public override string Id { get; } = "homeseer-sample-plugin";
+        public override string Id { get; } = "HomeSeerSamplePlugin";
         
         /// <inheritdoc />
         /// <remarks>

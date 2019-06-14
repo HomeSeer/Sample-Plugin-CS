@@ -78,10 +78,12 @@
   or within corresponding subdirectories (ex. html\js\ or html\css\)
   -->
   <ItemGroup>
-    <HtmlFiles Include="html\*" />
+    <HtmlFiles Include="html\*"><InProject>false</InProject></HtmlFiles>
   </ItemGroup>
   <ItemGroup>
     <Content Include="html\sample-blank.html" />
+    <Content Include="html\sample-guided-process.html" />
+    <Content Include="html\sample-plugin-feature.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

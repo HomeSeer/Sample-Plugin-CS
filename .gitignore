@@ -3,7 +3,7 @@
 ################################################################################
 
 /packages
-/.vs/HomeSeerSamplePlugin/v16
+/.vs
 /obj
-/bin/Debug
+/bin
 *.user

@@ -143,6 +143,14 @@
                             alert("Error");
                             return;
                         }
+                        else if (response.startsWith('{')) {
+                            var responseObj = JSON.parse(response);
+                            var mystEle = '<img src=\"' + responseObj.data + '\"/>';
+                            $('#lastStep').prepend(mystEle);
+                            $('#lastStepText').text("");
+                            $('#process-stepper').nextStep();
+                            return;
+                        }
                         
                         $('#lastStepText').text(response);
                         $('#process-stepper').nextStep();

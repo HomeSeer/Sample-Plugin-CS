@@ -206,13 +206,13 @@ namespace HSPI_HomeSeerSamplePlugin {
             return PluginStatus.OK();
         }
 
-        
+
         // sample functions and properties that can be called from HS, and a HTML page
 
         /// <summary>
         /// sample function with one parameter
         /// on the HTML page call this with:
-        /// {{plugin_function 'homeseer-sample-plugin' 'MyCustomFunction' ['1']}}
+        /// {{plugin_function 'HomeSeerSamplePlugin' 'MyCustomFunction' ['1']}}
         /// </summary>
         public string MyCustomFunction(string param) {
             return "1234";

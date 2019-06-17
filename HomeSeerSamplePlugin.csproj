@@ -12,7 +12,7 @@
     This is the root directory for the local HomeSeer installation.
     The plugin will be automatically deployed to this directory after a successful build
     -->
-    <HomeSeerRoot>..\Homeseer\</HomeSeerRoot>
+    <HomeSeerRoot>..\Homeseer\Homeseer\</HomeSeerRoot>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>

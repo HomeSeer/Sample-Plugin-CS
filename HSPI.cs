@@ -282,7 +282,7 @@ namespace HSPI_HomeSeerSamplePlugin {
             switch(page) {
                 case "sample-plugin-feature.html":
                     // use default ajax handler to update 3 divs
-                    response = "['timediv', '" + "Saved at " + DateTime.Now.ToString() + "','div2','Save OK','main_content','']";
+                    response = "['timediv', '" + "Saved at " + DateTime.Now.ToString() + "','div2','Saved OK','main_content','']";
                     break;
                     
                 case "sample-guided-process.html":

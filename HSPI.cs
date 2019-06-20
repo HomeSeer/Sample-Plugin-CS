@@ -160,6 +160,8 @@ namespace HSPI_HomeSeerSamplePlugin {
         }
 
         protected override void Initialize() {
+            //Load the state of Settings saved to INI if there are any.
+            LoadSettingsFromIni();
             Console.WriteLine("Registering feature pages");
             //Initialize feature pages            
             HomeSeerSystem.RegisterFeaturePage(Id, "sample-guided-process.html", "Sample Guided Process");
@@ -169,6 +171,7 @@ namespace HSPI_HomeSeerSamplePlugin {
         }
 
         protected override bool OnSettingsChange(List<Page> pages) {
+            Console.WriteLine("OnSettingsChange");
             foreach (var pageDelta in pages) {
                 var page = Settings[pageDelta.Id];
                 foreach (var settingDelta in pageDelta.Views) {

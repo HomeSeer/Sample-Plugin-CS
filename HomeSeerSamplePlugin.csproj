@@ -69,7 +69,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <!--
   Include the local HTML folder and all of the HTML files it contains.
@@ -77,7 +76,9 @@
   or within corresponding subdirectories (ex. html\js\ or html\css\)
   -->
   <ItemGroup>
-    <HtmlFiles Include="html\*"><InProject>false</InProject></HtmlFiles>
+    <HtmlFiles Include="html\*">
+      <InProject>false</InProject>
+    </HtmlFiles>
   </ItemGroup>
   <ItemGroup>
     <Content Include="html\sample-blank.html" />

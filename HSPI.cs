@@ -220,7 +220,43 @@ namespace HSPI_HomeSeerSamplePlugin {
         public string MyCustomFunction(string param) {
             return "1234";
         }
-        
+
+        public List<string> MyCustomFunctionArray(string param)
+        {
+            List<string> list = new List<string>();
+
+            list.Add("item 1");
+            list.Add("item 2");
+
+            return list;
+
+        }
+
+        [Serializable]
+        public class clsItem
+        {
+            public int intItem;
+            public string stringItem;
+        }
+
+        public List<clsItem> MyCustomFunctionArrayCustomClass(string param)
+        {
+            List<clsItem> list = new List<clsItem>();
+
+            clsItem i1 = new clsItem();
+            i1.intItem = 1;
+            i1.stringItem = "string item 1";
+            list.Add(i1);
+
+            clsItem i2 = new clsItem();
+            i2.intItem = 2;
+            i2.stringItem = "string item 2";
+            list.Add(i2);
+
+            return list;
+
+        }
+
         /// <summary>
         /// Called by the sample guided process feature page through a liquid tag to provide the list of available colors
         /// </summary>

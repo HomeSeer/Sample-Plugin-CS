@@ -143,6 +143,21 @@
                             <input type="text" pattern="[0-9.]*" id="settings-page3.sampleinput6" class="form-control jui-input" name="settings-page3.sampleinput6" value="">
                             <label for="settings-page3.sampleinput6" id="settings-page3.sampleinput6.hint">Sample Decimal Input</label>
                         </div>
+                        The follow demonstrates how to call custom functions in your plugin using tags<br />
+                        Custom function value:{{ plugin_function 'HomeSeerSamplePlugin' 'MyCustomFunction' ['1'] }}
+                        <br><br>
+                        {{ list=plugin_function 'HomeSeerSamplePlugin' 'MyCustomFunctionArray' ['1'] }}
+                        Custom function array values:<br>
+                        {{ for item in list }}
+                        Item: {{item}}<br>
+                        {{ end }}
+                        <br><br>
+                        {{ list2=plugin_function 'HomeSeerSamplePlugin' 'MyCustomFunctionArrayCustomClass' ['1'] }}
+                        Custom function array values using custom class:<br>
+                        {{ for item2 in list2 }}
+                        Item int: {{ item2.int_item }}<br>
+                        Item string: {{ item2.string_item }}<br><br>
+                        {{ end }}
                     </form>
                 </div>
             </div>

@@ -84,14 +84,14 @@ namespace HSPI_HomeSeerSamplePlugin {
                 new SelectListView(new StringBuilder(pageId).Append(".sampleselectlist1").ToString(),
                                    "Sample Select List 1",
                                    sampleSelectListOptions);
-            var sampleButton1 = new ButtonView(new StringBuilder(pageId).Append(".samplebutton1").ToString(),
+            /*var sampleButton1 = new ButtonView(new StringBuilder(pageId).Append(".samplebutton1").ToString(),
                                                "Sample Button 1",
-                                               "samplebutton1");
+                                               "samplebutton1");*/
 
             settingsPage1.AddView(sampleLabel1);
             settingsPage1.AddView(sampleToggle1);
             settingsPage1.AddView(sampleSelectList1);
-            settingsPage1.AddView(sampleButton1);
+            //settingsPage1.AddView(sampleButton1);
             Settings.Add(settingsPage1);
             //Build Settings Page 2
             pageId = "settings-page2";

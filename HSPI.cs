@@ -168,6 +168,7 @@ namespace HSPI_HomeSeerSamplePlugin {
             HomeSeerSystem.RegisterFeaturePage(Id, "sample-blank.html", "Sample Blank Page");
             HomeSeerSystem.RegisterFeaturePage(Id, "sample-plugin-feature.html", "Sample Feature Page 1");
             Console.WriteLine("Initialized");
+            Status = PluginStatus.Ok();
         }
 
         protected override bool OnSettingsChange(List<Page> pages) {
@@ -203,12 +204,7 @@ namespace HSPI_HomeSeerSamplePlugin {
             return true;
         }
 
-        //TODO clean up the documentation here to better indicate how it should be used
-        public override PluginStatus OnStatusCheck() {
-            //Determine the state of your plugin
-            return PluginStatus.OK();
-        }
-
+        protected override void BeforeReturnStatus() {}
 
         // sample functions and properties that can be called from HS, and a HTML page
 

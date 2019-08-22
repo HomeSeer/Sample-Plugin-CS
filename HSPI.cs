@@ -157,6 +157,8 @@ namespace HSPI_HomeSeerSamplePlugin {
             settingsPage3.AddView(sampleInput5);
             settingsPage3.AddView(sampleInput6);
             Settings.Add(settingsPage3);
+            
+            ActionTypes.AddActionType(typeof(SampleActionType));
         }
 
         protected override void Initialize() {

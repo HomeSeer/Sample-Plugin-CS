@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HSPI.cs" />
+    <Compile Include="SampleActionType.cs" />
     <Compile Include="SampleGuidedProcessData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -16,6 +16,9 @@ namespace HSPI_HomeSeerSamplePlugin {
                                                      "Input"
                                                  };
 
+        public SampleActionType(int id, int eventRef, byte[] dataIn) : base(id, eventRef, dataIn) { }
+        public SampleActionType() { }
+
         public override bool IsFullyConfigured() {
             switch (ConfigPage.ViewCount) {
                 case 1: {
@@ -56,10 +59,21 @@ namespace HSPI_HomeSeerSamplePlugin {
                 ConfigPage.UpdateViewById(changedView);
                 if (changedView.Id == SelectListId) {
                     var selectList = ConfigPage.GetViewById(changedView.Id) as SelectListView;
+                    var selection = selectList?.Selection ?? 0;
                     switch (selectList?.GetSelectedOption()) {
                         case "Input":
+                            if (ConfigPage.ViewCount == 2) {
+                                break;
+                            }
                             var inputview = new InputView(InputId, "Sample Input");
                             ConfigPage.AddView(inputview);
+                            break;
+                        default:
+                            if (ConfigPage.ViewCount != 2) {
+                                break;
+                            }
+                            InitializePage();
+                            InitActionPage(selection);
                             break;
                     }
                 }
@@ -71,7 +85,12 @@ namespace HSPI_HomeSeerSamplePlugin {
         }
 
         protected override void OnNewAction() {
+            InitActionPage();
+        }
+
+        private void InitActionPage(int selection = 0) {
             var selectList1 = new SelectListView(SelectListId, "Action Option", SelectListOptions);
+            selectList1.Selection = selection;
             ConfigPage.AddView(selectList1);
         }
 

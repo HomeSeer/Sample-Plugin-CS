@@ -72,7 +72,7 @@ namespace HSPI_HomeSeerSamplePlugin {
                             if (ConfigPage.ViewCount != 2) {
                                 break;
                             }
-                            InitializePage();
+                            Initialize();
                             InitActionPage(selection);
                             break;
                     }

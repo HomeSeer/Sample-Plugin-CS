@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using HomeSeer.Jui.Types;
 using HomeSeer.Jui.Views;
 using HomeSeer.PluginSdk;
 using Newtonsoft.Json;
-
-// ReSharper disable IdentifierTypo
 
 namespace HSPI_HomeSeerSamplePlugin {
 
@@ -27,19 +26,6 @@ namespace HSPI_HomeSeerSamplePlugin {
 
 
         #region Properties
-        
-        /// <summary>
-        /// The list of colors used throughout the plugin
-        /// </summary>
-        public static List<string> ColorList { get; } = new List<string> {
-                                                                             "Red",
-                                                                             "Orange",
-                                                                             "Yellow",
-                                                                             "Green",
-                                                                             "Blue",
-                                                                             "Indigo",
-                                                                             "Violet"
-                                                                         };
 
         /// <inheritdoc />
         /// <remarks>
@@ -69,96 +55,118 @@ namespace HSPI_HomeSeerSamplePlugin {
         public HSPI() {
             //Initialize the plugin 
             //Setup anything that needs to be configured before a connection to HomeSeer is established
-            // like building the settings pages
+            // like initializing the starting state of anything needed for the operation of the plugin
             
-            //Build Settings Page 1
-            var pageId = "settings-page1";
-            var settingsPage1 = Page.Factory.CreateSettingPage(pageId, "Page 1");
-            var sampleToggle1 = new ToggleView(new StringBuilder(pageId).Append(".sampletoggle1").ToString(),
-                                              "Sample Toggle 1");
-            var sampleLabel1 = new LabelView(new StringBuilder(pageId).Append(".samplelabel1").ToString(),
-                                             "Sample Label 1",
-                                             "This is a sample label with a title");
-            var sampleSelectListOptions = new List<string> { "Option 1", "Option 2", "Option 3" };
-            var sampleSelectList1 =
-                new SelectListView(new StringBuilder(pageId).Append(".sampleselectlist1").ToString(),
-                                   "Sample Select List 1",
-                                   sampleSelectListOptions);
-            /*var sampleButton1 = new ButtonView(new StringBuilder(pageId).Append(".samplebutton1").ToString(),
-                                               "Sample Button 1",
-                                               "samplebutton1");*/
-
-            settingsPage1.AddView(sampleLabel1);
-            settingsPage1.AddView(sampleToggle1);
-            settingsPage1.AddView(sampleSelectList1);
-            //settingsPage1.AddView(sampleButton1);
-            Settings.Add(settingsPage1);
-            //Build Settings Page 2
-            pageId = "settings-page2";
-            var settingsPage2 = Page.Factory.CreateSettingPage(pageId, "Page 2");
-            var sampleLabel2 = new LabelView(new StringBuilder(pageId).Append(".colorlabel").ToString(),
-                                             null,
-                                             "These control the list of colors presented for selection in the Sample Guided Process feature page.");
-            var redToggle = new ToggleView(new StringBuilder(pageId).Append(".red").ToString(),
-                                               "Red", true);
-            var orangeToggle = new ToggleView(new StringBuilder(pageId).Append(".orange").ToString(),
-                                               "Orange", true);
-            var yellowToggle = new ToggleView(new StringBuilder(pageId).Append(".yellow").ToString(),
-                                               "Yellow", true);
-            var greenToggle = new ToggleView(new StringBuilder(pageId).Append(".green").ToString(),
-                                              "Green", true);
-            var blueToggle = new ToggleView(new StringBuilder(pageId).Append(".blue").ToString(),
-                                              "Blue", true);
-            var indigoToggle = new ToggleView(new StringBuilder(pageId).Append(".indigo").ToString(),
-                                              "Indigo", true);
-            var violetToggle = new ToggleView(new StringBuilder(pageId).Append(".violet").ToString(),
-                                              "Violet", true);
-            var sampleViewGroup1 = new ViewGroup(new StringBuilder(pageId).Append(".colorgroup").ToString(),
-                                                 "Available colors");
-            sampleViewGroup1.AddView(redToggle);
-            sampleViewGroup1.AddView(orangeToggle);
-            sampleViewGroup1.AddView(yellowToggle);
-            sampleViewGroup1.AddView(greenToggle);
-            sampleViewGroup1.AddView(blueToggle);
-            sampleViewGroup1.AddView(indigoToggle);
-            sampleViewGroup1.AddView(violetToggle);
-            var sampleLabel3 = new LabelView(new StringBuilder(pageId).Append(".samplelabel3").ToString(),
-                                             null,
-                                             "This is a sample label without a title");
-            var sampleSelectList2 =
-                new SelectListView(new StringBuilder(pageId).Append(".sampleselectlist2").ToString(),
-                                   "Sample Select List 2",
-                                   sampleSelectListOptions, ESelectListType.RadioList);
-
-            settingsPage2.AddView(sampleViewGroup1);
-            settingsPage2.AddView(sampleLabel3);
-            settingsPage2.AddView(sampleSelectList2);
-            Settings.Add(settingsPage2);
-            //Build Settings Page 3
-            pageId = "settings-page3";
-            var settingsPage3 = Page.Factory.CreateSettingPage(pageId, "Page 3");
-            var sampleInput1 = new InputView(new StringBuilder(pageId).Append(".sampleinput1").ToString(),
-                                             "Sample Text Input");
-            var sampleInput2 = new InputView(new StringBuilder(pageId).Append(".sampleinput2").ToString(),
-                                             "Sample Number Input", EInputType.Number);
-            var sampleInput3 = new InputView(new StringBuilder(pageId).Append(".sampleinput3").ToString(),
-                                             "Sample Email Input", EInputType.Email);
-            var sampleInput4 = new InputView(new StringBuilder(pageId).Append(".sampleinput4").ToString(),
-                                             "Sample URL Input", EInputType.Url);
-            var sampleInput5 = new InputView(new StringBuilder(pageId).Append(".sampleinput5").ToString(),
-                                             "Sample Password Input", EInputType.Password);
-            var sampleInput6 = new InputView(new StringBuilder(pageId).Append(".sampleinput6").ToString(),
-                                             "Sample Decimal Input", EInputType.Decimal);
-
-            settingsPage3.AddView(sampleInput1);
-            settingsPage3.AddView(sampleInput2);
-            settingsPage3.AddView(sampleInput3);
-            settingsPage3.AddView(sampleInput4);
-            settingsPage3.AddView(sampleInput5);
-            settingsPage3.AddView(sampleInput6);
-            Settings.Add(settingsPage3);
+            //Such as initializing the settings pages presented to the user (currently saved state is loaded later)
+            InitializeSettingsPages();
             
-            ActionTypes.AddActionType(typeof(SampleActionType));
+            //Or adding an event action or trigger type definition to the list of types supported by your plugin
+            ActionTypes.AddActionType(typeof(WriteLogSampleActionType));
+            //TODO sample trigger
+        }
+
+        /// <summary>
+        /// Initialize the starting state of the settings pages for the HomeSeerSamplePlugin.
+        ///  This constructs the framework that the user configurable settings for the plugin live in.
+        ///  Any saved configuration options are loaded later in <see cref="Initialize"/> using
+        ///  <see cref="AbstractPlugin.LoadSettingsFromIni"/>
+        /// </summary>
+        /// <remarks>
+        /// For ease of use throughout the plugin, all of the view IDs, names, and values (non-volatile data)
+        ///  are stored in the <see cref="HSPI_HomeSeerSamplePlugin.Constants.Settings"/> static class.
+        /// </remarks>
+        private void InitializeSettingsPages() {
+            //Initialize the first settings page
+            // This page is used to manipulate the behavior of the sample plugin
+            
+            //Start a PageFactory to construct the Page
+            var settingsPage1 = PageFactory.CreateSettingsPage(Constants.Settings.SettingsPage1Id, 
+                                                               Constants.Settings.SettingsPage1Name);
+            //Add a LabelView to the page
+            settingsPage1.WithLabel(Constants.Settings.Sp1ColorLabelId, null, 
+                                    Constants.Settings.Sp1ColorLabelValue);
+            //Create a list of ToggleViews using the keys and values stored in Constants.Settings.ColorMap as
+            // the IDs and Names respectively
+            var colorToggles = Constants.Settings.ColorMap
+                                        .Select(kvp => new ToggleView(kvp.Key, kvp.Value, true)
+                                                       {ToggleType = EToggleType.Checkbox})
+                                        .ToList();
+            //Add a ViewGroup containing all of the ToggleViews to the page
+            settingsPage1.WithGroup(Constants.Settings.Sp1ColorGroupId,
+                                    Constants.Settings.Sp1ColorGroupName,
+                                    colorToggles);
+            //Create 2 ToggleViews for controlling the visibility of the other two settings pages
+            var pageToggles = new List<ToggleView> {
+                                  new ToggleView(Constants.Settings.Sp1PageVisToggle1Id, Constants.Settings.Sp1PageVisToggle1Name, true),
+                                  new ToggleView(Constants.Settings.Sp1PageVisToggle2Id, Constants.Settings.Sp1PageVisToggle2Name, true),
+                              };
+            //Add a ViewGroup containing all of the ToggleViews to the page
+            settingsPage1.WithGroup(Constants.Settings.Sp1PageToggleGroupId,
+                                    Constants.Settings.Sp1PageToggleGroupName,
+                                    pageToggles);
+            //Add the first page to the list of plugin settings pages
+            Settings.Add(settingsPage1.Page);
+            
+            //Initialize the second settings page
+            // This page is used to visually demonstrate all of the available JUI views except for InputViews.
+            // None of these views interact with the plugin and are merely for show.
+            
+            //Start a PageFactory to construct the Page
+            var settingsPage2 = PageFactory.CreateSettingsPage(Constants.Settings.SettingsPage2Id, 
+                                                               Constants.Settings.SettingsPage2Name);
+            //Add a LabelView with a title to the page
+            settingsPage2.WithLabel(Constants.Settings.Sp2LabelWTitleId, 
+                                    Constants.Settings.Sp2LabelWTitleName, 
+                                    Constants.Settings.Sp2LabelWTitleValue);
+            //Add a LabelView without a title to the page
+            settingsPage2.WithLabel(Constants.Settings.Sp2LabelWoTitleId,
+                                    null,
+                                    Constants.Settings.Sp2LabelWoTitleValue);
+            //Add a toggle switch to the page
+            settingsPage2.WithToggle(Constants.Settings.Sp2SampleToggleId, Constants.Settings.Sp2SampleToggleName);
+            //Add a checkbox to the page
+            settingsPage2.WithCheckBox(Constants.Settings.Sp2SampleCheckBoxId, Constants.Settings.Sp2SampleCheckBoxName);
+            //Add a drop down select list to the page
+            settingsPage2.WithDropDownSelectList(Constants.Settings.Sp2SelectListId,
+                                         Constants.Settings.Sp2SelectListName,
+                                         Constants.Settings.Sp2SelectListOptions);
+            //Add a radio select list to the page
+            settingsPage2.WithRadioSelectList(Constants.Settings.Sp2RadioSlId,
+                                         Constants.Settings.Sp2RadioSlName,
+                                         Constants.Settings.Sp2SelectListOptions);
+            //Add the second page to the list of plugin settings pages
+            Settings.Add(settingsPage2.Page);
+            
+            //Initialize the third settings page
+            // This page is used to visually demonstrate the different types of JUI InputViews.
+            
+            //Start a PageFactory to construct the Page
+            var settingsPage3 = PageFactory.CreateSettingsPage(Constants.Settings.SettingsPage3Id, Constants.Settings.SettingsPage3Name);
+            //Add a text InputView to the page
+            settingsPage3.WithInput(Constants.Settings.Sp3SampleInput1Id,
+                                    Constants.Settings.Sp3SampleInput1Name);
+            //Add a number InputView to the page
+            settingsPage3.WithInput(Constants.Settings.Sp3SampleInput2Id,
+                                    Constants.Settings.Sp3SampleInput2Name,
+                                    EInputType.Number);
+            //Add an email InputView to the page
+            settingsPage3.WithInput(Constants.Settings.Sp3SampleInput3Id,
+                                    Constants.Settings.Sp3SampleInput3Name,
+                                    EInputType.Email);
+            //Add a URL InputView to the page
+            settingsPage3.WithInput(Constants.Settings.Sp3SampleInput4Id,
+                                    Constants.Settings.Sp3SampleInput4Name,
+                                    EInputType.Url);
+            //Add a password InputView to the page
+            settingsPage3.WithInput(Constants.Settings.Sp3SampleInput5Id,
+                                    Constants.Settings.Sp3SampleInput5Name,
+                                    EInputType.Password);
+            //Add a decimal InputView to the page
+            settingsPage3.WithInput(Constants.Settings.Sp3SampleInput6Id,
+                                    Constants.Settings.Sp3SampleInput6Name,
+                                    EInputType.Decimal);
+            //Add the third page to the list of plugin settings pages
+            Settings.Add(settingsPage3.Page);
         }
 
         protected override void Initialize() {
@@ -168,91 +176,76 @@ namespace HSPI_HomeSeerSamplePlugin {
             //Initialize feature pages            
             HomeSeerSystem.RegisterFeaturePage(Id, "sample-guided-process.html", "Sample Guided Process");
             HomeSeerSystem.RegisterFeaturePage(Id, "sample-blank.html", "Sample Blank Page");
+            //TODO convert this to a couple of buttons that interact with triggers
             HomeSeerSystem.RegisterFeaturePage(Id, "sample-plugin-feature.html", "Sample Feature Page 1");
             Console.WriteLine("Initialized");
             Status = PluginStatus.Ok();
         }
 
-        protected override bool OnSettingsChange(List<Page> pages) {
-            Console.WriteLine("OnSettingsChange");
-            foreach (var pageDelta in pages) {
-                var page = Settings[pageDelta.Id];
-                foreach (var settingDelta in pageDelta.Views) {
-                    //process settings changes
-                    page.UpdateViewById(settingDelta);
-                    try {
-                        var newValue = settingDelta.GetStringValue();
-                        if (newValue == null) {
-                            continue;
-                        }
+        protected override bool OnSettingChange(string pageId, AbstractView currentView, AbstractView changedView) {
 
-                        //TODO react to settings change
-                        
-                        
-                        
-                        //TODO revise INI setting saving
-                        HomeSeerSystem.SaveINISetting(SettingsSectionName, settingDelta.Id, newValue, SettingsFileName);
-                    }
-                    catch (InvalidOperationException exception) {
-                        Console.WriteLine(exception);
-                        //TODO Process ViewGroup?
-                    }
+            //React to the toggles that control the visibility of the last 2 settings pages
+            if (changedView.Id == Constants.Settings.Sp1PageVisToggle1Id) {
+                if (!(changedView is ToggleView tView)) {
+                    return false;
                 }
-
-                //Make sure the new state is stored
-                Settings[pageDelta.Id] = page;
+                
+                if (tView.IsEnabled) {
+                    Settings.ShowPageById(Constants.Settings.SettingsPage2Id);
+                }
+                else {
+                    Settings.HidePageById(Constants.Settings.SettingsPage2Id);
+                }
+            }
+            else if (changedView.Id == Constants.Settings.Sp1PageVisToggle2Id) {
+                if (!(changedView is ToggleView tView)) {
+                    return false;
+                }
+                
+                if (tView.IsEnabled) {
+                    Settings.ShowPageById(Constants.Settings.SettingsPage3Id);
+                }
+                else {
+                    Settings.HidePageById(Constants.Settings.SettingsPage3Id);
+                }
             }
 
             return true;
         }
 
         protected override void BeforeReturnStatus() {}
+        
+        //TODO document everything regarding PostBackProc better
+        public override string PostBackProc(string page, string data, string user, int userRights) {
+            Console.WriteLine("PostBack");
+            //TODO expand on the response content
+            var response = "";
 
-        // sample functions and properties that can be called from HS, and a HTML page
+            switch(page) {
+                case "sample-plugin-feature.html":
+                    // use default ajax handler to update 3 divs
+                    response = "['timediv', '" + "Saved at " + DateTime.Now.ToString() + "','div2','Saved OK','main_content','']";
+                    break;
+                    
+                case "sample-guided-process.html":
+                    try {
+                        var postData = JsonConvert.DeserializeObject<SampleGuidedProcessData>(data);
 
-        /// <summary>
-        /// sample function with one parameter
-        /// on the HTML page call this with:
-        /// {{plugin_function 'HomeSeerSamplePlugin' 'MyCustomFunction' ['1']}}
-        /// </summary>
-        public string MyCustomFunction(string param) {
-            return "1234";
-        }
+                        Console.WriteLine("Post back from sample-guided-process page");
+                        response = postData.GetResponse();
 
-        public List<string> MyCustomFunctionArray(string param)
-        {
-            List<string> list = new List<string>();
+                    }
+                    catch (JsonSerializationException exception) {
+                        Console.WriteLine(exception.Message);
+                        response = "error";
+                    }
 
-            list.Add("item 1");
-            list.Add("item 2");
-
-            return list;
-
-        }
-
-        [Serializable]
-        public class clsItem
-        {
-            public int intItem;
-            public string stringItem;
-        }
-
-        public List<clsItem> MyCustomFunctionArrayCustomClass(string param)
-        {
-            List<clsItem> list = new List<clsItem>();
-
-            clsItem i1 = new clsItem();
-            i1.intItem = 1;
-            i1.stringItem = "string item 1";
-            list.Add(i1);
-
-            clsItem i2 = new clsItem();
-            i2.intItem = 2;
-            i2.stringItem = "string item 2";
-            list.Add(i2);
-
-            return list;
-
+                    break;
+                default:
+                    response = "error";
+                    break;
+            }
+            return response;
         }
 
         /// <summary>
@@ -284,7 +277,7 @@ namespace HSPI_HomeSeerSamplePlugin {
             }
             catch (Exception exception) {
                 Console.WriteLine(exception);
-                colorList = ColorList;
+                colorList = Constants.Settings.ColorMap.Values.ToList();
             }
            
             for (var i = 0; i < colorList.Count; i++) {
@@ -304,43 +297,57 @@ namespace HSPI_HomeSeerSamplePlugin {
             sb.Append("</select>");
             return sb.ToString();
         }
+        
+        //TODO clean these up
 
         /// <summary>
         /// sample property that returns a string
         /// on the HTML page call this with:
         /// </summary>
         public string MyCustomProperty { get; } = "Sample property";
+        
+        // sample functions and properties that can be called from HS, and a HTML page
 
-        public override string PostBackProc(string page, string data, string user, int userRights) {
-            Console.WriteLine("PostBack");
-            //TODO expand on the response content
-            var response = "";
+        /// <summary>
+        /// sample function with one parameter
+        /// on the HTML page call this with:
+        /// {{plugin_function 'HomeSeerSamplePlugin' 'MyCustomFunction' ['1']}}
+        /// </summary>
+        public string MyCustomFunction(string param) {
+            return "1234";
+        }
 
-            switch(page) {
-                case "sample-plugin-feature.html":
-                    // use default ajax handler to update 3 divs
-                    response = "['timediv', '" + "Saved at " + DateTime.Now.ToString() + "','div2','Saved OK','main_content','']";
-                    break;
-                    
-                case "sample-guided-process.html":
-                    try {
-                        var postData = JsonConvert.DeserializeObject<SampleGuidedProcessData>(data);
+        public List<string> MyCustomFunctionArray(string param) {
+            List<string> list = new List<string>();
 
-                        Console.WriteLine("Post back from sample-guided-process page");
-                        response = postData.GetResponse();
+            list.Add("item 1");
+            list.Add("item 2");
 
-                    }
-                    catch (JsonSerializationException exception) {
-                        Console.WriteLine(exception.Message);
-                        response = "error";
-                    }
+            return list;
 
-                    break;
-                default:
-                    response = "error";
-                    break;
-            }
-            return response;
+        }
+
+        [Serializable]
+        public class clsItem {
+            public int    intItem;
+            public string stringItem;
+        }
+
+        public List<clsItem> MyCustomFunctionArrayCustomClass(string param) {
+            List<clsItem> list = new List<clsItem>();
+
+            clsItem i1 = new clsItem();
+            i1.intItem    = 1;
+            i1.stringItem = "string item 1";
+            list.Add(i1);
+
+            clsItem i2 = new clsItem();
+            i2.intItem    = 2;
+            i2.stringItem = "string item 2";
+            list.Add(i2);
+
+            return list;
+
         }
 
     }

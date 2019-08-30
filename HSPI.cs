@@ -5,6 +5,7 @@ using System.Text;
 using HomeSeer.Jui.Types;
 using HomeSeer.Jui.Views;
 using HomeSeer.PluginSdk;
+using HomeSeer.PluginSdk.Logging;
 using Newtonsoft.Json;
 
 namespace HSPI_HomeSeerSamplePlugin {
@@ -22,7 +23,7 @@ namespace HSPI_HomeSeerSamplePlugin {
     /// </para>
     /// </remarks>
     // ReSharper disable once InconsistentNaming
-    public class HSPI : AbstractPlugin {
+    public class HSPI : AbstractPlugin, WriteLogSampleActionType.IWriteLogActionListener {
 
 
         #region Properties
@@ -54,6 +55,9 @@ namespace HSPI_HomeSeerSamplePlugin {
 
         public HSPI() {
             //Initialize the plugin 
+
+            //Enable internal debug logging to console
+            LogDebug = true;
             //Setup anything that needs to be configured before a connection to HomeSeer is established
             // like initializing the starting state of anything needed for the operation of the plugin
             
@@ -297,7 +301,13 @@ namespace HSPI_HomeSeerSamplePlugin {
             sb.Append("</select>");
             return sb.ToString();
         }
-        
+
+        /// <inheritdoc />
+        public void WriteLog(ELogType logType, string message) {
+            
+            HomeSeerSystem.WriteLog(logType, message, Name);
+        }
+
         //TODO clean these up
 
         /// <summary>

@@ -29,11 +29,9 @@ namespace HSPI_HomeSeerSamplePlugin {
 
         public override bool IsFullyConfigured() {
             switch (ConfigPage.ViewCount) {
-                case 1: 
-                    return false;
-                case 2: 
+                case 3: 
                     var inputView = ConfigPage.GetViewById(LogMessageInputId) as InputView;
-                    return (inputView?.Value.Length ?? 0) > 0;
+                    return (inputView?.Value?.Length ?? 0) > 0;
                 default:
                     return false;
             }

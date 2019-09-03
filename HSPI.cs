@@ -231,7 +231,7 @@ namespace HSPI_HomeSeerSamplePlugin {
 
                     try {
                         var triggerOptions = JsonConvert.DeserializeObject<List<bool>>(data);
-                        var configuredTriggers = HomeSeerSystem.TriggerMatches(Name, SampleTriggerType.TriggerNumber);
+                        var configuredTriggers = HomeSeerSystem.GetTriggersByType(Name, SampleTriggerType.TriggerNumber);
                         if (configuredTriggers.Length == 0) {
                             return "No triggers configured to fire.";
                         }

@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace HSPI_HomeSeerSamplePlugin {
 
-    /// <inheritdoc />
+    /// <inheritdoc cref="AbstractPlugin"/>
     /// <summary>
     /// The plugin class for HomeSeer Sample Plugin that implements the <see cref="AbstractPlugin"/> base class.
     /// </summary>
@@ -180,8 +180,7 @@ namespace HSPI_HomeSeerSamplePlugin {
             //Initialize feature pages            
             HomeSeerSystem.RegisterFeaturePage(Id, "sample-guided-process.html", "Sample Guided Process");
             HomeSeerSystem.RegisterFeaturePage(Id, "sample-blank.html", "Sample Blank Page");
-            //TODO convert this to a couple of buttons that interact with triggers
-            HomeSeerSystem.RegisterFeaturePage(Id, "sample-plugin-feature.html", "Sample Feature Page 1");
+            HomeSeerSystem.RegisterFeaturePage(Id, "sample-trigger-feature.html", "Trigger Feature Page");
             Console.WriteLine("Initialized");
             Status = PluginStatus.Ok();
         }
@@ -213,22 +212,43 @@ namespace HSPI_HomeSeerSamplePlugin {
                     Settings.HidePageById(Constants.Settings.SettingsPage3Id);
                 }
             }
+            else {
+                Console.WriteLine($"View ID {changedView.Id} does not match any views on the page.");
+            }
 
             return true;
         }
 
         protected override void BeforeReturnStatus() {}
         
-        //TODO document everything regarding PostBackProc better
+        //Process any HTTP POST requests targeting pages registered to your plugin
         public override string PostBackProc(string page, string data, string user, int userRights) {
             Console.WriteLine("PostBack");
-            //TODO expand on the response content
             var response = "";
 
             switch(page) {
-                case "sample-plugin-feature.html":
-                    // use default ajax handler to update 3 divs
-                    response = "['timediv', '" + "Saved at " + DateTime.Now.ToString() + "','div2','Saved OK','main_content','']";
+                case "sample-trigger-feature.html":
+
+                    try {
+                        var triggerOptions = JsonConvert.DeserializeObject<List<bool>>(data);
+                        var configuredTriggers = HomeSeerSystem.TriggerMatches(Name, SampleTriggerType.TriggerNumber);
+                        if (configuredTriggers.Length == 0) {
+                            return "No triggers configured to fire.";
+                        }
+
+                        foreach (var configuredTrigger in configuredTriggers) {
+                            var trig = new SampleTriggerType(configuredTrigger.TANumber-1, configuredTrigger.evRef, configuredTrigger.DataIn);
+                            trig.SelectedSubTriggerIndex = configuredTrigger.SubTANumber;
+                            if (trig.ShouldTriggerFire(triggerOptions.ToArray())) {
+                                HomeSeerSystem.TriggerFire(Name, configuredTrigger);
+                            }
+                        }
+                    }
+                    catch (JsonSerializationException exception) {
+                        Console.WriteLine(exception);
+                        response = $"Error while deserializing data: {exception.Message}";
+                    }
+                    
                     break;
                     
                 case "sample-guided-process.html":
@@ -254,6 +274,9 @@ namespace HSPI_HomeSeerSamplePlugin {
 
         /// <summary>
         /// Called by the sample guided process feature page through a liquid tag to provide the list of available colors
+        /// <para>
+        /// {{plugin_function 'HomeSeerSamplePlugin' 'GetSampleSelectList' []}}
+        /// </para>
         /// </summary>
         /// <returns>The HTML for the list of select list options</returns>
         public string GetSampleSelectList() {
@@ -301,63 +324,53 @@ namespace HSPI_HomeSeerSamplePlugin {
             sb.Append("</select>");
             return sb.ToString();
         }
+        
+        /// <summary>
+        /// Called by the sample trigger feature page to get the HTML for a list of checkboxes to use a trigger options
+        /// <para>
+        /// {{list=plugin_function 'HomeSeerSamplePlugin' 'GetTriggerOptionsHtml' [2]}}
+        /// </para>
+        /// </summary>
+        /// <param name="numTriggerOptions">The number of checkboxes to generate</param>
+        /// <returns>
+        /// A List of HTML strings representing checkbox input elements
+        /// </returns>
+        public List<string> GetTriggerOptionsHtml(int numTriggerOptions) {
+            var triggerOptions = new List<string>();
+            for (var i = 1; i <= numTriggerOptions; i++) {
+                var cbTrigOpt = new ToggleView($"checkbox-triggeroption{i}", $"Trigger Option {i}")
+                                {
+                                    ToggleType = EToggleType.Checkbox
+                                };
+                triggerOptions.Add(cbTrigOpt.ToHtml());
+            }
+
+            return triggerOptions;
+        }
+        
+        /// <summary>
+        /// Called by the sample trigger feature page to get trigger option items as a list to populate HTML on the page.
+        /// <para>
+        /// {{list2=plugin_function 'HomeSeerSamplePlugin' 'GetTriggerOptions' [2]}}
+        /// </para>
+        /// </summary>
+        /// <param name="numTriggerOptions">The number of trigger options to generate.</param>
+        /// <returns>
+        /// A List of <see cref="TriggerOptionItem"/>s used for checkbox input HTML element IDs and Names
+        /// </returns>
+        public List<TriggerOptionItem> GetTriggerOption(int numTriggerOptions) {
+            var triggerOptions = new List<TriggerOptionItem>();
+            for (var i = 1; i <= numTriggerOptions; i++) {
+                triggerOptions.Add(new TriggerOptionItem(i, $"Trigger Option {i}"));
+            }
+
+            return triggerOptions;
+        }
 
         /// <inheritdoc />
         public void WriteLog(ELogType logType, string message) {
             
             HomeSeerSystem.WriteLog(logType, message, Name);
-        }
-
-        //TODO clean these up
-
-        /// <summary>
-        /// sample property that returns a string
-        /// on the HTML page call this with:
-        /// </summary>
-        public string MyCustomProperty { get; } = "Sample property";
-        
-        // sample functions and properties that can be called from HS, and a HTML page
-
-        /// <summary>
-        /// sample function with one parameter
-        /// on the HTML page call this with:
-        /// {{plugin_function 'HomeSeerSamplePlugin' 'MyCustomFunction' ['1']}}
-        /// </summary>
-        public string MyCustomFunction(string param) {
-            return "1234";
-        }
-
-        public List<string> MyCustomFunctionArray(string param) {
-            List<string> list = new List<string>();
-
-            list.Add("item 1");
-            list.Add("item 2");
-
-            return list;
-
-        }
-
-        [Serializable]
-        public class clsItem {
-            public int    intItem;
-            public string stringItem;
-        }
-
-        public List<clsItem> MyCustomFunctionArrayCustomClass(string param) {
-            List<clsItem> list = new List<clsItem>();
-
-            clsItem i1 = new clsItem();
-            i1.intItem    = 1;
-            i1.stringItem = "string item 1";
-            list.Add(i1);
-
-            clsItem i2 = new clsItem();
-            i2.intItem    = 2;
-            i2.stringItem = "string item 2";
-            list.Add(i2);
-
-            return list;
-
         }
 
     }

@@ -64,6 +64,8 @@
   <ItemGroup>
     <Compile Include="Constants\Settings.cs" />
     <Compile Include="HSPI.cs" />
+    <Compile Include="SampleTriggerType.cs" />
+    <Compile Include="TriggerOptionItem.cs" />
     <Compile Include="WriteLogSampleActionType.cs" />
     <Compile Include="SampleGuidedProcessData.cs" />
     <Compile Include="Program.cs" />
@@ -85,7 +87,7 @@
   <ItemGroup>
     <Content Include="html\sample-blank.html" />
     <Content Include="html\sample-guided-process.html" />
-    <Content Include="html\sample-plugin-feature.html" />
+    <Content Include="html\sample-trigger-feature.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

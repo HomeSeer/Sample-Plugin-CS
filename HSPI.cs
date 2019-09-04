@@ -67,6 +67,7 @@ namespace HSPI_HomeSeerSamplePlugin {
             //Or adding an event action or trigger type definition to the list of types supported by your plugin
             ActionTypes.AddActionType(typeof(WriteLogSampleActionType));
             //TODO sample trigger
+            TriggerTypes.AddTriggerType(typeof(SampleTriggerType));
         }
 
         /// <summary>

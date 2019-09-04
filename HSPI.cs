@@ -66,7 +66,7 @@ namespace HSPI_HomeSeerSamplePlugin {
             
             //Or adding an event action or trigger type definition to the list of types supported by your plugin
             ActionTypes.AddActionType(typeof(WriteLogSampleActionType));
-            //TODO sample trigger
+            TriggerTypes.AddTriggerType(typeof(SampleTriggerType));
         }
 
         /// <summary>
@@ -237,8 +237,7 @@ namespace HSPI_HomeSeerSamplePlugin {
                         }
 
                         foreach (var configuredTrigger in configuredTriggers) {
-                            var trig = new SampleTriggerType(configuredTrigger.TANumber-1, configuredTrigger.evRef, configuredTrigger.DataIn);
-                            trig.SelectedSubTriggerIndex = configuredTrigger.SubTANumber;
+                            var trig = new SampleTriggerType(configuredTrigger.UID, configuredTrigger.evRef, configuredTrigger.SubTANumber-1, configuredTrigger.DataIn);
                             if (trig.ShouldTriggerFire(triggerOptions.ToArray())) {
                                 HomeSeerSystem.TriggerFire(Name, configuredTrigger);
                             }

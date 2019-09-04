@@ -36,8 +36,10 @@ namespace HSPI_HomeSeerSamplePlugin {
                     return false;
             }
         }
-        
-        public SampleTriggerType(int id, int eventRef, byte[] dataIn) : base(id, eventRef, dataIn) { }
+
+        /// <inheritdoc />
+        public SampleTriggerType(TrigActInfo trigInfo) : base(trigInfo) { }
+        public SampleTriggerType(int id, int eventRef, int selectedSubTriggerIndex, byte[] dataIn) : base(id, eventRef, selectedSubTriggerIndex, dataIn) { }
         public SampleTriggerType() { }
 
         protected override List<string> SubTriggerTypeNames { get; set; } = new List<string>
@@ -69,10 +71,10 @@ namespace HSPI_HomeSeerSamplePlugin {
             switch (SelectedSubTriggerIndex) {
                 case 0:
                     //Check to see if the input for the number of options is valid
-                    return GetSelectedSpecificOptionNum() >= 0;
+                    return GetSelectedOptionCount() >= 0;
                 case 1:
                     //Check to see if the input for the required option is valid
-                    return GetSelectedOptionCount() >= 0;
+                    return GetSelectedSpecificOptionNum() >= 0;
                 default:
                     //The last two sub trigger types do not require any additional configuration
                     return true;
@@ -80,7 +82,7 @@ namespace HSPI_HomeSeerSamplePlugin {
         }
 
         protected override bool OnConfigItemUpdate(AbstractView configViewChange) {
-            throw new System.NotImplementedException();
+            return true;
         }
 
         public override string GetPrettyString() {

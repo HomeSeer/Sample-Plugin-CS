@@ -49,6 +49,7 @@ namespace HSPI_HomeSeerSamplePlugin {
         /// </remarks>
         public override string Name { get; } = "Sample Plugin";
         
+        /// <inheritdoc />
         protected override string SettingsFileName { get; } = "HomeSeerSamplePlugin.ini";
 
         #endregion
@@ -176,7 +177,9 @@ namespace HSPI_HomeSeerSamplePlugin {
         protected override void Initialize() {
             //Load the state of Settings saved to INI if there are any.
             LoadSettingsFromIni();
-            Console.WriteLine("Registering feature pages");
+            if (LogDebug) {
+                Console.WriteLine("Registering feature pages");
+            }
             //Initialize feature pages            
             HomeSeerSystem.RegisterFeaturePage(Id, "sample-guided-process.html", "Sample Guided Process");
             HomeSeerSystem.RegisterFeaturePage(Id, "sample-blank.html", "Sample Blank Page");
@@ -189,10 +192,12 @@ namespace HSPI_HomeSeerSamplePlugin {
 
             //React to the toggles that control the visibility of the last 2 settings pages
             if (changedView.Id == Constants.Settings.Sp1PageVisToggle1Id) {
+                //Make sure the changed view is a ToggleView
                 if (!(changedView is ToggleView tView)) {
                     return false;
                 }
                 
+                //Show/Hide the second page based on the new state of the toggle
                 if (tView.IsEnabled) {
                     Settings.ShowPageById(Constants.Settings.SettingsPage2Id);
                 }
@@ -201,10 +206,12 @@ namespace HSPI_HomeSeerSamplePlugin {
                 }
             }
             else if (changedView.Id == Constants.Settings.Sp1PageVisToggle2Id) {
+                //Make sure the changed view is a ToggleView
                 if (!(changedView is ToggleView tView)) {
                     return false;
                 }
                 
+                //Show/Hide the second page based on the new state of the toggle
                 if (tView.IsEnabled) {
                     Settings.ShowPageById(Constants.Settings.SettingsPage3Id);
                 }
@@ -213,53 +220,83 @@ namespace HSPI_HomeSeerSamplePlugin {
                 }
             }
             else {
-                Console.WriteLine($"View ID {changedView.Id} does not match any views on the page.");
+                if (LogDebug) {
+                    Console.WriteLine($"View ID {changedView.Id} does not match any views on the page.");
+                }
             }
 
             return true;
         }
 
+        /// <inheritdoc />
+        /// <remarks>
+        /// This plugin does not have a shifting operational state; so this method is not used.
+        /// </remarks>
         protected override void BeforeReturnStatus() {}
         
-        //Process any HTTP POST requests targeting pages registered to your plugin
+        /// <inheritdoc />
+        /// <remarks>
+        /// Process any HTTP POST requests targeting pages registered to your plugin.
+        /// <para>
+        /// This is a very flexible process that does not have a predefined structure. The form <see cref="data"/> sends
+        ///  from a page is entirely up to you and what works for you.  JSON and Base64 strings are encouraged because
+        ///  of how readily available resources are to translate to/from these types. In Javascript, see JSON.stringify();
+        ///  and window.btoa();
+        /// </para>
+        /// </remarks>
         public override string PostBackProc(string page, string data, string user, int userRights) {
-            Console.WriteLine("PostBack");
+            if (LogDebug) {
+                Console.WriteLine("PostBack");
+            }
+            
             var response = "";
-
+            
             switch(page) {
                 case "sample-trigger-feature.html":
 
+                    //Handle the Trigger Feature page
                     try {
                         var triggerOptions = JsonConvert.DeserializeObject<List<bool>>(data);
+                        
+                        //Get all triggers configured on the HomeSeer system that are of the SampleTriggerType
                         var configuredTriggers = HomeSeerSystem.GetTriggersByType(Name, SampleTriggerType.TriggerNumber);
                         if (configuredTriggers.Length == 0) {
                             return "No triggers configured to fire.";
                         }
 
+                        //Handle each trigger that matches
                         foreach (var configuredTrigger in configuredTriggers) {
-                            var trig = new SampleTriggerType(configuredTrigger.UID, configuredTrigger.evRef, configuredTrigger.SubTANumber-1, configuredTrigger.DataIn);
+                            var trig = new SampleTriggerType(configuredTrigger);
                             if (trig.ShouldTriggerFire(triggerOptions.ToArray())) {
                                 HomeSeerSystem.TriggerFire(Name, configuredTrigger);
                             }
                         }
                     }
                     catch (JsonSerializationException exception) {
-                        Console.WriteLine(exception);
+                        if (LogDebug) {
+                            Console.WriteLine(exception);
+                        }
                         response = $"Error while deserializing data: {exception.Message}";
                     }
                     
                     break;
                     
                 case "sample-guided-process.html":
+                    
+                    //Handle the Guided Process page
                     try {
                         var postData = JsonConvert.DeserializeObject<SampleGuidedProcessData>(data);
 
-                        Console.WriteLine("Post back from sample-guided-process page");
+                        if (LogDebug) {
+                            Console.WriteLine("Post back from sample-guided-process page");
+                        }
                         response = postData.GetResponse();
 
                     }
                     catch (JsonSerializationException exception) {
-                        Console.WriteLine(exception.Message);
+                        if (LogDebug) {
+                            Console.WriteLine(exception.Message);
+                        }
                         response = "error";
                     }
 
@@ -279,7 +316,9 @@ namespace HSPI_HomeSeerSamplePlugin {
         /// </summary>
         /// <returns>The HTML for the list of select list options</returns>
         public string GetSampleSelectList() {
-            Console.WriteLine("Getting sample select list for sample-guided-process page");
+            if (LogDebug) {
+                Console.WriteLine("Getting sample select list for sample-guided-process page");
+            }
             var sb = new StringBuilder("<select class=\"mdb-select md-form\" id=\"step3SampleSelectList\">");
             sb.Append(Environment.NewLine);
             sb.Append("<option value=\"\" disabled selected>Color</option>");
@@ -302,7 +341,9 @@ namespace HSPI_HomeSeerSamplePlugin {
                 }
             }
             catch (Exception exception) {
-                Console.WriteLine(exception);
+                if (LogDebug) {
+                    Console.WriteLine(exception);
+                }
                 colorList = Constants.Settings.ColorMap.Values.ToList();
             }
            

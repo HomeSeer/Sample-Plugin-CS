@@ -2,6 +2,10 @@ using System;
 
 namespace HSPI_HomeSeerSamplePlugin {
 
+    /// <summary>
+    /// A simple Key-Value pair used by HTML liquid tags for representing a Trigger Option checkbox item
+    ///  on the Sample Trigger Feature Page.
+    /// </summary>
     [Serializable]
     public class TriggerOptionItem {
         

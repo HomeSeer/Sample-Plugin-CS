@@ -31,13 +31,23 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(HomeSeerRoot)</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32bit>false</Prefer32bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DirectToHs|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
@@ -99,7 +109,7 @@
 	<Target Name="AfterBuild">
 	</Target>
 	-->
-  <Target Name="AfterBuild">
+  <Target Name="AfterBuild" Condition=" '$(Configuration)|$(Platform)' == 'DirectToHs|AnyCPU' ">
     <Copy SourceFiles="@(HtmlFiles)" DestinationFolder="$(OutputPath)\html\$(PluginId)" />
   </Target>
 </Project>

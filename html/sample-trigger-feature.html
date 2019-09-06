@@ -30,20 +30,19 @@
             The following demonstrates how to use a liquid tag to load a collection of data from your plugin and iterate over it.
              For the sake of simplicity, the items in the collection are strings of HTML generated using the JUI library... 
             -->
-            {{ list=plugin_function 'HomeSeerSamplePlugin' 'GetTriggerOptionsHtml' ['2'] }}
+            {{ list=plugin_function 'HomeSeerSamplePlugin' 'GetTriggerOptionsHtml' [2] }}
             {{ for item in list }}
             {{ item }}
             {{ end }}
             <!--
             ...but you are also able to utilize additional liquid tags inside the for loop to manipulate HTML written here instead.
             -->
-            {{ list2=plugin_function 'HomeSeerSamplePlugin' 'GetTriggerOptions' ['2'] }}
-            {{ for item in list }}
+            {{ list2=plugin_function 'HomeSeerSamplePlugin' 'GetTriggerOption' [2] }}
+            {{ for item in list2 }}
             <div class="jui-view jui-toggle">
-                <label class="jui-toggle-text" for="{{ item.Id }}">{{ item.Name }}</label>
-                <span class="jui-toggle-control"><span class="form-check form-check-inline jui-toggle-checkbox"><input type="checkbox" class="form-check-input jui-input" id="{{ item.Id }}"/> <label class="form-check-label jui-toggle-checkbox-label" for="{{ item.Id }}"></label></span></span>
+                <label class="jui-toggle-text" for="{{ item.id }}">{{ item.name }}</label>
+                <span class="jui-toggle-control"><span class="form-check form-check-inline jui-toggle-checkbox"><input type="checkbox" class="form-check-input jui-input" id="{{ item.id }}"/> <label class="form-check-label jui-toggle-checkbox-label" for="{{ item.id }}"></label></span></span>
             </div>
-            {{ item }}
             {{ end }}
             <div class="jui-view jui-toggle">
                 <label class="jui-toggle-text" for="checkbox-triggeroption1">Trigger Option 1</label>

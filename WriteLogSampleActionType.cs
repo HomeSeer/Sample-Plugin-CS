@@ -52,7 +52,7 @@ namespace HSPI_HomeSeerSamplePlugin {
         /// <remarks>
         /// All action types must implement this constructor
         /// </remarks>
-        public WriteLogSampleActionType(int id, int eventRef, byte[] dataIn) : base(id, eventRef, dataIn) { }
+        public WriteLogSampleActionType(int id, int eventRef, byte[] dataIn, ActionTypeCollection.IActionTypeListener listener, bool logDebug = false) : base(id, eventRef, dataIn, listener, logDebug) { }
         /// <inheritdoc />
         /// <remarks>
         /// All trigger types must implement this constructor

@@ -70,12 +70,12 @@ namespace HSPI_HomeSeerSamplePlugin {
         }
 
         /// <inheritdoc />
-        public SampleTriggerType(TrigActInfo trigInfo) : base(trigInfo) { }
+        public SampleTriggerType(TrigActInfo trigInfo, TriggerTypeCollection.ITriggerTypeListener listener, bool logDebug = false) : base(trigInfo, listener, logDebug) { }
         /// <inheritdoc />
         /// <remarks>
         /// All trigger types must implement this constructor
         /// </remarks>
-        public SampleTriggerType(int id, int eventRef, int selectedSubTriggerIndex, byte[] dataIn) : base(id, eventRef, selectedSubTriggerIndex, dataIn) { }
+        public SampleTriggerType(int id, int eventRef, int selectedSubTriggerIndex, byte[] dataIn, TriggerTypeCollection.ITriggerTypeListener listener, bool logDebug = false) : base(id, eventRef, selectedSubTriggerIndex, dataIn, listener, logDebug) { }
         /// <inheritdoc />
         /// <remarks>
         /// All trigger types must implement this constructor

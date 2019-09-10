@@ -266,7 +266,7 @@ namespace HSPI_HomeSeerSamplePlugin {
 
                         //Handle each trigger that matches
                         foreach (var configuredTrigger in configuredTriggers) {
-                            var trig = new SampleTriggerType(configuredTrigger);
+                            var trig = new SampleTriggerType(configuredTrigger, this, LogDebug);
                             if (trig.ShouldTriggerFire(triggerOptions.ToArray())) {
                                 HomeSeerSystem.TriggerFire(Name, configuredTrigger);
                             }

@@ -1,11 +1,11 @@
-using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 
-namespace HSPI_HomeSeerSamplePlugin {
+namespace HSPI_HomeSeerSamplePlugin.Features {
 
     /// <summary>
     /// Used to contain input data from the sample guided process feature page.

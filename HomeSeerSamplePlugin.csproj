@@ -77,11 +77,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\Settings.cs" />
+    <Compile Include="Features\SampleGuidedProcessData.cs" />
+    <Compile Include="Features\TriggerOptionItem.cs" />
     <Compile Include="HSPI.cs" />
     <Compile Include="SampleTriggerType.cs" />
-    <Compile Include="TriggerOptionItem.cs" />
     <Compile Include="WriteLogSampleActionType.cs" />
-    <Compile Include="SampleGuidedProcessData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

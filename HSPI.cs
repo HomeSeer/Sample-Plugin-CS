@@ -6,6 +6,7 @@ using HomeSeer.Jui.Types;
 using HomeSeer.Jui.Views;
 using HomeSeer.PluginSdk;
 using HomeSeer.PluginSdk.Logging;
+using HSPI_HomeSeerSamplePlugin.Features;
 using Newtonsoft.Json;
 
 namespace HSPI_HomeSeerSamplePlugin {

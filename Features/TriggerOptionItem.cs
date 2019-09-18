@@ -1,6 +1,6 @@
 using System;
 
-namespace HSPI_HomeSeerSamplePlugin {
+namespace HSPI_HomeSeerSamplePlugin.Features {
 
     /// <summary>
     /// A simple Key-Value pair used by HTML liquid tags for representing a Trigger Option checkbox item

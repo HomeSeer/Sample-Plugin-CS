@@ -302,13 +302,39 @@ namespace HSPI_HomeSeerSamplePlugin {
                     }
 
                     break;
+                case "add-sample-device.html":
+
+                    try {
+                        var postData = JsonConvert.DeserializeObject<DeviceAddPostData>(data);
+                        if (LogDebug) {
+                            Console.WriteLine("Post back from add-sample-device page");
+                        }
+
+                        if (postData.Action == "verify") {
+                            response = JsonConvert.SerializeObject(postData.Device);
+                        }
+                        else {
+                            var device = postData.Device.BuildDevice(Id);
+                            var devRef = HomeSeerSystem.CreateDevice(device);
+                            var outData = postData.Device;
+                            outData.Ref = devRef;
+                            response = JsonConvert.SerializeObject(outData);
+                        }
+                    }
+                    catch (Exception exception) {
+                        if (LogDebug) {
+                            Console.WriteLine(exception.Message);
+                        }
+                        response = "error";
+                    }
+                    break;
                 default:
                     response = "error";
                     break;
             }
             return response;
         }
-
+        
         /// <summary>
         /// Called by the sample guided process feature page through a liquid tag to provide the list of available colors
         /// <para>

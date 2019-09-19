@@ -185,6 +185,7 @@ namespace HSPI_HomeSeerSamplePlugin {
             HomeSeerSystem.RegisterFeaturePage(Id, "sample-guided-process.html", "Sample Guided Process");
             HomeSeerSystem.RegisterFeaturePage(Id, "sample-blank.html", "Sample Blank Page");
             HomeSeerSystem.RegisterFeaturePage(Id, "sample-trigger-feature.html", "Trigger Feature Page");
+            HomeSeerSystem.RegisterDeviceIncPage(Id, "add-sample-device.html", "Add Sample Device");
             Console.WriteLine("Initialized");
             Status = PluginStatus.Ok();
         }

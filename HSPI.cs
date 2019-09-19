@@ -314,11 +314,11 @@ namespace HSPI_HomeSeerSamplePlugin {
                             response = JsonConvert.SerializeObject(postData.Device);
                         }
                         else {
-                            var device = postData.Device.BuildDevice(Id);
+                            var deviceData = postData.Device;
+                            var device = deviceData.BuildDevice(Id);
                             var devRef = HomeSeerSystem.CreateDevice(device);
-                            var outData = postData.Device;
-                            outData.Ref = devRef;
-                            response = JsonConvert.SerializeObject(outData);
+                            deviceData.Ref = devRef;
+                            response = JsonConvert.SerializeObject(deviceData);
                         }
                     }
                     catch (Exception exception) {

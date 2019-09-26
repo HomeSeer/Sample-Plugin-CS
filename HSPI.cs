@@ -6,6 +6,7 @@ using HomeSeer.Jui.Types;
 using HomeSeer.Jui.Views;
 using HomeSeer.PluginSdk;
 using HomeSeer.PluginSdk.Logging;
+using HSPI_HomeSeerSamplePlugin.Features;
 using Newtonsoft.Json;
 
 namespace HSPI_HomeSeerSamplePlugin {
@@ -184,6 +185,7 @@ namespace HSPI_HomeSeerSamplePlugin {
             HomeSeerSystem.RegisterFeaturePage(Id, "sample-guided-process.html", "Sample Guided Process");
             HomeSeerSystem.RegisterFeaturePage(Id, "sample-blank.html", "Sample Blank Page");
             HomeSeerSystem.RegisterFeaturePage(Id, "sample-trigger-feature.html", "Trigger Feature Page");
+            HomeSeerSystem.RegisterDeviceIncPage(Id, "add-sample-device.html", "Add Sample Device");
             Console.WriteLine("Initialized");
             Status = PluginStatus.Ok();
         }
@@ -301,13 +303,39 @@ namespace HSPI_HomeSeerSamplePlugin {
                     }
 
                     break;
+                case "add-sample-device.html":
+
+                    try {
+                        var postData = JsonConvert.DeserializeObject<DeviceAddPostData>(data);
+                        if (LogDebug) {
+                            Console.WriteLine("Post back from add-sample-device page");
+                        }
+
+                        if (postData.Action == "verify") {
+                            response = JsonConvert.SerializeObject(postData.Device);
+                        }
+                        else {
+                            var deviceData = postData.Device;
+                            var device = deviceData.BuildDevice(Id);
+                            var devRef = HomeSeerSystem.CreateDevice(device);
+                            deviceData.Ref = devRef;
+                            response = JsonConvert.SerializeObject(deviceData);
+                        }
+                    }
+                    catch (Exception exception) {
+                        if (LogDebug) {
+                            Console.WriteLine(exception.Message);
+                        }
+                        response = "error";
+                    }
+                    break;
                 default:
                     response = "error";
                     break;
             }
             return response;
         }
-
+        
         /// <summary>
         /// Called by the sample guided process feature page through a liquid tag to provide the list of available colors
         /// <para>

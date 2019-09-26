@@ -59,16 +59,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="HSCF, Version=1.0.0.2, Culture=neutral, PublicKeyToken=null">
-      <HintPath>packages\HomeSeer-PluginSDK.1.0.3\lib\net462\HSCF.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>packages\HomeSeer-PluginSDK.1.0.5\lib\net462\HSCF.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
       <HintPath>packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="PluginSdk, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>packages\HomeSeer-PluginSDK.1.0.3\lib\net462\PluginSdk.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>packages\HomeSeer-PluginSDK.1.0.5\lib\net462\PluginSdk.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -76,12 +76,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\Devices.cs" />
     <Compile Include="Constants\Settings.cs" />
+    <Compile Include="Features\DeviceAddPostData.cs" />
+    <Compile Include="Features\SampleGuidedProcessData.cs" />
+    <Compile Include="Features\TriggerOptionItem.cs" />
     <Compile Include="HSPI.cs" />
     <Compile Include="SampleTriggerType.cs" />
-    <Compile Include="TriggerOptionItem.cs" />
     <Compile Include="WriteLogSampleActionType.cs" />
-    <Compile Include="SampleGuidedProcessData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -100,6 +102,7 @@
     </HtmlFiles>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="html\add-sample-device.html" />
     <Content Include="html\sample-blank.html" />
     <Content Include="html\sample-guided-process.html" />
     <Content Include="html\sample-trigger-feature.html" />

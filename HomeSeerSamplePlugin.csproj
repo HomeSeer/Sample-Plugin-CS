@@ -59,11 +59,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="HSCF, Version=1.0.0.2, Culture=neutral, PublicKeyToken=null">
-      <HintPath>packages\HomeSeer-PluginSDK.1.0.3\lib\net462\HSCF.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>packages\HomeSeer-PluginSDK.1.0.5\lib\net462\HSCF.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
       <HintPath>packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PluginSdk, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>packages\HomeSeer-PluginSDK.1.0.5\lib\net462\PluginSdk.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -102,18 +106,6 @@
     <Content Include="html\sample-blank.html" />
     <Content Include="html\sample-guided-process.html" />
     <Content Include="html\sample-trigger-feature.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PluginSdk\PluginSdk.csproj">
-      <Project>{8d2165fa-0dbe-4f59-815c-72157b2401cf}</Project>
-      <Name>PluginSdk</Name>
-      <Targets>
-      </Targets>
-      <OutputItemType>
-      </OutputItemType>
-      <ReferenceSourceTarget>ProjectReference</ReferenceSourceTarget>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

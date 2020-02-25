@@ -57,6 +57,8 @@ namespace HSPI_HomeSeerSamplePlugin {
         /// <inheritdoc />
         protected override string SettingsFileName { get; } = "HomeSeerSamplePlugin.ini";
 
+        public override bool SupportsConfigDevice => true;
+
         #endregion
 
         public HSPI() {
@@ -253,7 +255,37 @@ namespace HSPI_HomeSeerSamplePlugin {
         /// This plugin does not have a shifting operational state; so this method is not used.
         /// </remarks>
         protected override void BeforeReturnStatus() {}
-        
+
+        /// <inheritdoc />
+        public override string GetJuiDeviceConfigPage(int deviceRef)
+        {
+            //Start a PageFactory to construct the Page
+            var deviceConfigPage = PageFactory.CreateDeviceConfigPage(Constants.Devices.DeviceConfigPageId,
+                                                                       Constants.Devices.DeviceConfigPageName);
+            //Add a LabelView with a title to the page
+            deviceConfigPage.WithLabel(Constants.Devices.DeviceConfigLabelWTitleId,
+                                    Constants.Devices.DeviceConfigLabelWTitleName,
+                                    Constants.Devices.DeviceConfigLabelWTitleValue);
+            //Add a LabelView without a title to the page
+            deviceConfigPage.WithLabel(Constants.Devices.DeviceConfigLabelWoTitleId,
+                                    null,
+                                    Constants.Devices.DeviceConfigLabelWoTitleValue);
+            //Add a toggle switch to the page
+            deviceConfigPage.WithToggle(Constants.Devices.DeviceConfigSampleToggleId, Constants.Devices.DeviceConfigSampleToggleName);
+            //Add a checkbox to the page
+            deviceConfigPage.WithCheckBox(Constants.Devices.DeviceConfigSampleCheckBoxId, Constants.Devices.DeviceConfigSampleCheckBoxName);
+            //Add a drop down select list to the page
+            deviceConfigPage.WithDropDownSelectList(Constants.Devices.DeviceConfigSelectListId,
+                                         Constants.Devices.DeviceConfigSelectListName,
+                                         Constants.Devices.DeviceConfigSelectListOptions);
+            //Add a radio select list to the page
+            deviceConfigPage.WithRadioSelectList(Constants.Devices.DeviceConfigRadioSlId,
+                                         Constants.Devices.DeviceConfigRadioSlName,
+                                         Constants.Devices.DeviceConfigSelectListOptions);
+
+            return deviceConfigPage.Page.ToJsonString();
+        }
+
         /// <inheritdoc />
         /// <remarks>
         /// Process any HTTP POST requests targeting pages registered to your plugin.

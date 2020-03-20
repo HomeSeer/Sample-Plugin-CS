@@ -39,6 +39,9 @@ namespace HSPI_HomeSeerSamplePlugin.Constants {
                                                                                 "Option 2",
                                                                                 "Option 3"
                                                                             };
+        public static string DeviceConfigInputId => $"{DeviceConfigPageId}-sampleinput";
+        public const string DeviceConfigInputName = "Sample Text Input";
+        public const string DeviceConfigInputValue = "This is a text input";
 
     }
 

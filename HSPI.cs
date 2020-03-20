@@ -283,6 +283,11 @@ namespace HSPI_HomeSeerSamplePlugin {
                                          Constants.Devices.DeviceConfigRadioSlName,
                                          Constants.Devices.DeviceConfigSelectListOptions);
 
+            //Add a text InputView to the page
+            deviceConfigPage.WithInput(Constants.Devices.DeviceConfigInputId,
+                                       Constants.Devices.DeviceConfigInputName,
+                                       Constants.Devices.DeviceConfigInputValue);
+
             return deviceConfigPage.Page.ToJsonString();
         }
 

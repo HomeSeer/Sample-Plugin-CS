@@ -26,6 +26,10 @@ namespace HSPI_HomeSeerSamplePlugin {
     // ReSharper disable once InconsistentNaming
     public class HSPI : AbstractPlugin, WriteLogSampleActionType.IWriteLogActionListener {
 
+        // Local vars
+
+        // speaker client instance
+        private SpeakerClient _speakerClient;
 
         #region Properties
 
@@ -57,7 +61,7 @@ namespace HSPI_HomeSeerSamplePlugin {
 
         public HSPI() {
             //Initialize the plugin 
-
+            
             //Enable internal debug logging to console
             LogDebug = true;
             //Setup anything that needs to be configured before a connection to HomeSeer is established
@@ -186,6 +190,20 @@ namespace HSPI_HomeSeerSamplePlugin {
             HomeSeerSystem.RegisterFeaturePage(Id, "sample-blank.html", "Sample Blank Page");
             HomeSeerSystem.RegisterFeaturePage(Id, "sample-trigger-feature.html", "Trigger Feature Page");
             HomeSeerSystem.RegisterDeviceIncPage(Id, "add-sample-device.html", "Add Sample Device");
+
+            // If a speaker client is needed that handles sending speech to an audio device, initialize that here.
+            // If you are supporting multiple speak devices such as multiple speakers, you would make this call
+            // in your reoutine that initializes each speaker device. Create a new instance of the speaker client
+            // for each speaker. We simply initalize one here as a sample implementation
+            _speakerClient = new SpeakerClient(Name);       
+            // if the HS system has the setting "No password required for local subnet" enabled, the user/pass passed to Connect are ignored
+            // if the connection is from the local subnet, else the user/pass passed here are must exist as a user in the system
+            // You will need to allow the user to supply a user/pass in your plugin settings
+            // This functions connects your speaker client to the system. Your client will then appear as a speaker client in the system
+            // and can be selected as a target for speech and audio in event actions.
+            // When the system speaks to your client, your SpeakText function is called in SpeakerClient class
+            _speakerClient.Connect("default", "default");
+
             Console.WriteLine("Initialized");
             Status = PluginStatus.Ok();
         }

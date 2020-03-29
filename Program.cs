@@ -8,7 +8,7 @@
 		/// <summary>
 		/// The instance of the plugin class
 		/// </summary>
-		private static HSPI _plugin;
+		public static HSPI _plugin;
 
 		public static void Main(string[] args) {
 			

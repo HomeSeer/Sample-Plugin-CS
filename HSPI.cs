@@ -410,7 +410,7 @@ namespace HSPI_HomeSeerSamplePlugin {
             var colorList = new List<string>();
 
             try {
-                var colorSettings = Settings["settings-page2"].GetViewById("settings-page2.colorgroup");
+                var colorSettings = Settings[Constants.Settings.SettingsPage1Id].GetViewById(Constants.Settings.Sp1ColorGroupId);
                 if (!(colorSettings is ViewGroup colorViewGroup)) {
                     throw new ViewTypeMismatchException("No View Group found containing colors");
                 }

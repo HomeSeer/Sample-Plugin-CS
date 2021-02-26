@@ -316,7 +316,7 @@ namespace HSPI_HomeSeerSamplePlugin {
                         var triggerOptions = JsonConvert.DeserializeObject<List<bool>>(data);
                         
                         //Get all triggers configured on the HomeSeer system that are of the SampleTriggerType
-                        var configuredTriggers = HomeSeerSystem.GetTriggersByType(Name, SampleTriggerType.TriggerNumber);
+                        var configuredTriggers = HomeSeerSystem.GetTriggersByType(Id, SampleTriggerType.TriggerNumber);
                         if (configuredTriggers.Length == 0) {
                             return "No triggers configured to fire.";
                         }
@@ -325,7 +325,7 @@ namespace HSPI_HomeSeerSamplePlugin {
                         foreach (var configuredTrigger in configuredTriggers) {
                             var trig = new SampleTriggerType(configuredTrigger, this, LogDebug);
                             if (trig.ShouldTriggerFire(triggerOptions.ToArray())) {
-                                HomeSeerSystem.TriggerFire(Name, configuredTrigger);
+                                HomeSeerSystem.TriggerFire(Id, configuredTrigger);
                             }
                         }
                     }

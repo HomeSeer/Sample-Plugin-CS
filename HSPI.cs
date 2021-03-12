@@ -461,7 +461,7 @@ namespace HSPI_HomeSeerSamplePlugin {
         public List<string> GetTriggerOptionsHtml(int numTriggerOptions) {
             var triggerOptions = new List<string>();
             for (var i = 1; i <= numTriggerOptions; i++) {
-                var cbTrigOpt = new ToggleView($"checkbox-triggeroption{i}", $"Trigger Option {i}")
+                var cbTrigOpt = new ToggleView($"liquid-checkbox-triggeroption{i}", $"Trigger Option {i}")
                                 {
                                     ToggleType = EToggleType.Checkbox
                                 };

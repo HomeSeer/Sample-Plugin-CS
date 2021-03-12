@@ -5,6 +5,7 @@ using System.Text;
 using HomeSeer.Jui.Types;
 using HomeSeer.Jui.Views;
 using HomeSeer.PluginSdk;
+using HomeSeer.PluginSdk.Devices;
 using HomeSeer.PluginSdk.Logging;
 using HSPI_HomeSeerSamplePlugin.Features;
 using Newtonsoft.Json;
@@ -259,6 +260,28 @@ namespace HSPI_HomeSeerSamplePlugin {
         /// <inheritdoc />
         public override string GetJuiDeviceConfigPage(int deviceRef)
         {
+            // Read values saved in PlugExtraData
+            bool toggleValue = GetExtraData(deviceRef, Constants.Devices.DeviceConfigSampleToggleId) == true.ToString();
+            bool checkboxValue = GetExtraData(deviceRef, Constants.Devices.DeviceConfigSampleCheckBoxId) == true.ToString();
+            string dropdownSavedValue = GetExtraData(deviceRef, Constants.Devices.DeviceConfigSelectListId);
+            int dropdownValue = -1;
+            if(!string.IsNullOrEmpty(dropdownSavedValue))
+            {
+                dropdownValue = Convert.ToInt32(dropdownSavedValue);
+            }
+            string radioSelectSavedValue = GetExtraData(deviceRef, Constants.Devices.DeviceConfigRadioSlId);
+            int radioSelectValue = -1;
+            if (!string.IsNullOrEmpty(radioSelectSavedValue))
+            {
+                radioSelectValue = Convert.ToInt32(radioSelectSavedValue);
+            }
+            string inputSavedValue = GetExtraData(deviceRef, Constants.Devices.DeviceConfigInputId);
+            string inputValue = Constants.Devices.DeviceConfigInputValue;
+            if (!string.IsNullOrEmpty(inputSavedValue))
+            {
+                inputValue = inputSavedValue;
+            }
+
             //Start a PageFactory to construct the Page
             var deviceConfigPage = PageFactory.CreateDeviceConfigPage(Constants.Devices.DeviceConfigPageId,
                                                                        Constants.Devices.DeviceConfigPageName);
@@ -271,24 +294,75 @@ namespace HSPI_HomeSeerSamplePlugin {
                                     null,
                                     Constants.Devices.DeviceConfigLabelWoTitleValue);
             //Add a toggle switch to the page
-            deviceConfigPage.WithToggle(Constants.Devices.DeviceConfigSampleToggleId, Constants.Devices.DeviceConfigSampleToggleName);
+            deviceConfigPage.WithToggle(Constants.Devices.DeviceConfigSampleToggleId, Constants.Devices.DeviceConfigSampleToggleName, toggleValue);
             //Add a checkbox to the page
-            deviceConfigPage.WithCheckBox(Constants.Devices.DeviceConfigSampleCheckBoxId, Constants.Devices.DeviceConfigSampleCheckBoxName);
+            deviceConfigPage.WithCheckBox(Constants.Devices.DeviceConfigSampleCheckBoxId, Constants.Devices.DeviceConfigSampleCheckBoxName, checkboxValue);
             //Add a drop down select list to the page
             deviceConfigPage.WithDropDownSelectList(Constants.Devices.DeviceConfigSelectListId,
                                          Constants.Devices.DeviceConfigSelectListName,
-                                         Constants.Devices.DeviceConfigSelectListOptions);
+                                         Constants.Devices.DeviceConfigSelectListOptions,
+                                         dropdownValue);
             //Add a radio select list to the page
             deviceConfigPage.WithRadioSelectList(Constants.Devices.DeviceConfigRadioSlId,
                                          Constants.Devices.DeviceConfigRadioSlName,
-                                         Constants.Devices.DeviceConfigSelectListOptions);
+                                         Constants.Devices.DeviceConfigSelectListOptions,
+                                         radioSelectValue);
 
             //Add a text InputView to the page
             deviceConfigPage.WithInput(Constants.Devices.DeviceConfigInputId,
                                        Constants.Devices.DeviceConfigInputName,
-                                       Constants.Devices.DeviceConfigInputValue);
+                                       inputValue);
 
             return deviceConfigPage.Page.ToJsonString();
+        }
+
+        /// <inheritdoc />
+        protected override bool OnDeviceConfigChange(Page deviceConfigPage, int deviceRef)
+        {
+            foreach (AbstractView view in deviceConfigPage.Views)
+            {
+                if(view.Id == Constants.Devices.DeviceConfigSampleToggleId)
+                {
+                    ToggleView v = view as ToggleView;
+                    if (v  != null)
+                    {
+                        SetExtraData(deviceRef, Constants.Devices.DeviceConfigSampleToggleId, v.IsEnabled.ToString());
+                    }
+                }
+                else if (view.Id == Constants.Devices.DeviceConfigSampleCheckBoxId)
+                {
+                    ToggleView v = view as ToggleView;
+                    if (v != null)
+                    {
+                        SetExtraData(deviceRef, Constants.Devices.DeviceConfigSampleCheckBoxId, v.IsEnabled.ToString());
+                    }
+                }
+                else if (view.Id == Constants.Devices.DeviceConfigSelectListId)
+                {
+                    SelectListView v = view as SelectListView;
+                    if (v != null)
+                    {
+                        SetExtraData(deviceRef, Constants.Devices.DeviceConfigSelectListId, v.Selection.ToString());
+                    }
+                }
+                else if (view.Id == Constants.Devices.DeviceConfigRadioSlId)
+                {
+                    SelectListView v = view as SelectListView;
+                    if (v != null)
+                    {
+                        SetExtraData(deviceRef, Constants.Devices.DeviceConfigRadioSlId, v.Selection.ToString());
+                    }
+                }
+                else if (view.Id == Constants.Devices.DeviceConfigInputId)
+                {
+                    InputView v = view as InputView;
+                    if (v != null)
+                    {
+                        SetExtraData(deviceRef, Constants.Devices.DeviceConfigInputId, v.Value);
+                    }
+                }
+            }
+            return true;
         }
 
         /// <inheritdoc />
@@ -494,6 +568,27 @@ namespace HSPI_HomeSeerSamplePlugin {
         public void WriteLog(ELogType logType, string message) {
             
             HomeSeerSystem.WriteLog(logType, message, Name);
+        }
+
+        private string GetExtraData(int deviceRef, string key)
+        {
+            PlugExtraData extraData = (PlugExtraData)HomeSeerSystem.GetPropertyByRef(deviceRef, EProperty.PlugExtraData);
+            if (extraData != null && extraData.ContainsNamed(key))
+            {
+                return extraData[key];
+            }
+            return "";
+        }
+
+        private void SetExtraData(int deviceRef, string key, string value)
+        {
+            PlugExtraData extraData = (PlugExtraData)HomeSeerSystem.GetPropertyByRef(deviceRef, EProperty.PlugExtraData);
+            if (extraData == null)
+            {
+                extraData = new PlugExtraData();
+            }
+            extraData[key] = value;
+            HomeSeerSystem.UpdatePropertyByRef(deviceRef, EProperty.PlugExtraData, extraData);
         }
 
     }

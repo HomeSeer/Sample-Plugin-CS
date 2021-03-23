@@ -71,17 +71,15 @@ namespace HSPI_HomeSeerSamplePlugin {
             }
 
             private DeviceFactory BuildLpSwitch(string pluginId, DeviceFactory df) {
-                var ff = FeatureFactory.CreateGenericBinaryControl(pluginId, $"{Name} Controls", 
-                                                                   "On", "Off", 
-                                                                   1, 0);
+                var ff = FeatureFactory.CreateGenericBinaryControl(pluginId, $"Controls", "On", "Off", 1, 0)
+                    .WithLocation(Location1).WithLocation2(Location2);
                 df.WithFeature(ff);
                 return df;
             }
             
             private DeviceFactory BuildLpSensor(string pluginId, DeviceFactory df) {
-                var ff = FeatureFactory.CreateGenericBinarySensor(pluginId, $"{Name} Sensor State", 
-                                                                  "Sensor tripped", "No event", 
-                                                                  1, 0);
+                var ff = FeatureFactory.CreateGenericBinarySensor(pluginId, $"Sensor State", "Sensor tripped", "No event", 1, 0)
+                    .WithLocation(Location1).WithLocation2(Location2);
                 df.WithFeature(ff);
                 return df;
             }

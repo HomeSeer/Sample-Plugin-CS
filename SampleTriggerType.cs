@@ -52,7 +52,7 @@ namespace HSPI_HomeSeerSamplePlugin {
             switch (SelectedSubTriggerIndex) {
                 case 0:
                     var numRequiredOptions = GetSelectedOptionCount() + 1;
-                    return numRequiredOptions != 0 && triggerOptions.Any(triggerOption => triggerOption);
+                    return numRequiredOptions != 0 && triggerOptions.Count(triggerOption => triggerOption) == numRequiredOptions;
                 case 1:
                     var specificRequiredOption = GetSelectedSpecificOptionNum();
                     if (triggerOptions.Length < specificRequiredOption + 1) {

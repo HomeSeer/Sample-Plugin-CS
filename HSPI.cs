@@ -211,6 +211,12 @@ namespace HSPI_HomeSeerSamplePlugin {
             Status = PluginStatus.Ok();
         }
 
+        protected override void OnShutdown()
+        {
+            Console.WriteLine("Shutting down");
+            _speakerClient.Disconnect();
+        }
+
         protected override bool OnSettingChange(string pageId, AbstractView currentView, AbstractView changedView) {
 
             //React to the toggles that control the visibility of the last 2 settings pages

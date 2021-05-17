@@ -56,6 +56,9 @@ namespace HSPI_HomeSeerSamplePlugin.Constants {
         public const string Sp2SelectListName = "Sample Dropdown Select List";
         public static string Sp2RadioSlId           => $"{SettingsPage2Id}-sampleselectlist2";
         public const string Sp2RadioSlName = "Sample Radio Select List";
+
+        public static string Sp2TextAreaId => $"{SettingsPage2Id}-textarea";
+        public const string Sp2TextAreaName = "Sample Text Area";
         public static List<string> Sp2SelectListOptions => new List<string> {
                                                                                 "Option 1",
                                                                                 "Option 2",

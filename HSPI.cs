@@ -147,6 +147,9 @@ namespace HSPI_HomeSeerSamplePlugin {
             settingsPage2.WithRadioSelectList(Constants.Settings.Sp2RadioSlId,
                                          Constants.Settings.Sp2RadioSlName,
                                          Constants.Settings.Sp2SelectListOptions);
+            //Add a time span to the page
+            settingsPage2.WithTimeSpan(Constants.Settings.Sp2SampleTimeSpanId, Constants.Settings.Sp2SampleTimeSpanName);
+
             //Add the second page to the list of plugin settings pages
             Settings.Add(settingsPage2.Page);
             
@@ -281,6 +284,12 @@ namespace HSPI_HomeSeerSamplePlugin {
             {
                 inputValue = inputSavedValue;
             }
+            string timeSpanSavedValue = GetExtraData(deviceRef, Constants.Devices.DeviceConfigTimeSpanId);
+            TimeSpan timeSpanValue = TimeSpan.Zero;
+            if(!string.IsNullOrEmpty(timeSpanSavedValue))
+            {
+                TimeSpan.TryParse(timeSpanSavedValue, out timeSpanValue);
+            }
 
             //Start a PageFactory to construct the Page
             var deviceConfigPage = PageFactory.CreateDeviceConfigPage(Constants.Devices.DeviceConfigPageId,
@@ -312,6 +321,13 @@ namespace HSPI_HomeSeerSamplePlugin {
             deviceConfigPage.WithInput(Constants.Devices.DeviceConfigInputId,
                                        Constants.Devices.DeviceConfigInputName,
                                        inputValue);
+
+            //Add a time span to the page
+            deviceConfigPage.WithTimeSpan(Constants.Devices.DeviceConfigTimeSpanId,
+                                       Constants.Devices.DeviceConfigTimeSpanName,
+                                       timeSpanValue,
+                                       true,
+                                       false);
 
             return deviceConfigPage.Page.ToJsonString();
         }
@@ -359,6 +375,14 @@ namespace HSPI_HomeSeerSamplePlugin {
                     if (v != null)
                     {
                         SetExtraData(deviceRef, Constants.Devices.DeviceConfigInputId, v.Value);
+                    }
+                }
+                else if (view.Id == Constants.Devices.DeviceConfigTimeSpanId)
+                {
+                    TimeSpanView v = view as TimeSpanView;
+                    if (v != null)
+                    {
+                        SetExtraData(deviceRef, Constants.Devices.DeviceConfigTimeSpanId, v.GetStringValue());
                     }
                 }
             }

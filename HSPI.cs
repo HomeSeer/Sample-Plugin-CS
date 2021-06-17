@@ -155,6 +155,12 @@ namespace HSPI_HomeSeerSamplePlugin {
             settingsPage2.WithRadioSelectList(Constants.Settings.Sp2RadioSlId,
                                          Constants.Settings.Sp2RadioSlName,
                                          Constants.Settings.Sp2SelectListOptions);
+
+            //Add a text area to the page
+            settingsPage2.WithTextArea(Constants.Settings.Sp2TextAreaId,
+                                         Constants.Settings.Sp2TextAreaName,
+                                         3);
+
             //Add the second page to the list of plugin settings pages
             Settings.Add(settingsPage2.Page);
             
@@ -295,6 +301,12 @@ namespace HSPI_HomeSeerSamplePlugin {
             {
                 inputValue = inputSavedValue;
             }
+            string textAreaSavedValue = GetExtraData(deviceRef, Constants.Devices.DeviceConfigTextAreaId);
+            string textAreaValue = "";
+            if (!string.IsNullOrEmpty(textAreaSavedValue))
+            {
+                textAreaValue = textAreaSavedValue;
+            }
 
             //Start a PageFactory to construct the Page
             var deviceConfigPage = PageFactory.CreateDeviceConfigPage(Constants.Devices.DeviceConfigPageId,
@@ -326,6 +338,11 @@ namespace HSPI_HomeSeerSamplePlugin {
             deviceConfigPage.WithInput(Constants.Devices.DeviceConfigInputId,
                                        Constants.Devices.DeviceConfigInputName,
                                        inputValue);
+
+            //Add a text area to the page
+            deviceConfigPage.WithTextArea(Constants.Devices.DeviceConfigTextAreaId,
+                                       Constants.Devices.DeviceConfigTextAreaName,
+                                       textAreaValue);
 
             return deviceConfigPage.Page.ToJsonString();
         }
@@ -373,6 +390,14 @@ namespace HSPI_HomeSeerSamplePlugin {
                     if (v != null)
                     {
                         SetExtraData(deviceRef, Constants.Devices.DeviceConfigInputId, v.Value);
+                    }
+                }
+                else if (view.Id == Constants.Devices.DeviceConfigTextAreaId)
+                {
+                    TextAreaView v = view as TextAreaView;
+                    if (v != null)
+                    {
+                        SetExtraData(deviceRef, Constants.Devices.DeviceConfigTextAreaId, v.Value);
                     }
                 }
             }

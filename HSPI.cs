@@ -98,16 +98,24 @@ namespace HSPI_HomeSeerSamplePlugin {
             //Add a LabelView to the page
             settingsPage1.WithLabel(Constants.Settings.Sp1ColorLabelId, null, 
                                     Constants.Settings.Sp1ColorLabelValue);
-            //Create a list of ToggleViews using the keys and values stored in Constants.Settings.ColorMap as
-            // the IDs and Names respectively
-            var colorToggles = Constants.Settings.ColorMap
-                                        .Select(kvp => new ToggleView(kvp.Key, kvp.Value, true)
-                                                       {ToggleType = EToggleType.Checkbox})
-                                        .ToList();
-            //Add a ViewGroup containing all of the ToggleViews to the page
-            settingsPage1.WithGroup(Constants.Settings.Sp1ColorGroupId,
-                                    Constants.Settings.Sp1ColorGroupName,
-                                    colorToggles);
+
+            //Create a group of ToggleViews displayed as a flexbox grid 
+            var colorViewGroup = new GridView(Constants.Settings.Sp1ColorGroupId, Constants.Settings.Sp1ColorGroupName);
+            var colorFirstRow = new  GridRow();
+            colorFirstRow.AddItem(new ToggleView(Constants.Settings.Sp1ColorToggleRedId, Constants.Settings.ColorRedName, true) { ToggleType = EToggleType.Checkbox }, extraSmallSize: EColSize.Col6, largeSize: EColSize.Col3);
+            colorFirstRow.AddItem(new ToggleView(Constants.Settings.Sp1ColorToggleOrangeId, Constants.Settings.ColorOrangeName, true) { ToggleType = EToggleType.Checkbox }, extraSmallSize: EColSize.Col6, largeSize: EColSize.Col3);
+            colorFirstRow.AddItem(new ToggleView(Constants.Settings.Sp1ColorToggleYellowId, Constants.Settings.ColorYellowName, true) { ToggleType = EToggleType.Checkbox }, extraSmallSize: EColSize.Col6, largeSize: EColSize.Col3);
+            colorFirstRow.AddItem(new ToggleView(Constants.Settings.Sp1ColorToggleGreenId, Constants.Settings.ColorGreenName, true) { ToggleType = EToggleType.Checkbox }, extraSmallSize: EColSize.Col6, largeSize: EColSize.Col3);
+            var colorSecondRow = new GridRow();
+            colorSecondRow.AddItem(new ToggleView(Constants.Settings.Sp1ColorToggleBlueId, Constants.Settings.ColorBlueName, true) { ToggleType = EToggleType.Checkbox }, extraSmallSize: EColSize.Col6, largeSize: EColSize.Col3);
+            colorSecondRow.AddItem(new ToggleView(Constants.Settings.Sp1ColorToggleIndigoId, Constants.Settings.ColorIndigoName, true) { ToggleType = EToggleType.Checkbox }, extraSmallSize: EColSize.Col6, largeSize: EColSize.Col3);
+            colorSecondRow.AddItem(new ToggleView(Constants.Settings.Sp1ColorToggleVioletId, Constants.Settings.ColorVioletName, true) { ToggleType = EToggleType.Checkbox }, extraSmallSize: EColSize.Col6, largeSize: EColSize.Col3);
+
+            colorViewGroup.AddRow(colorFirstRow);
+            colorViewGroup.AddRow(colorSecondRow);
+            //Add the ViewGroup containing all of the ToggleViews to the page
+            settingsPage1.WithView(colorViewGroup);
+
             //Create 2 ToggleViews for controlling the visibility of the other two settings pages
             var pageToggles = new List<ToggleView> {
                                   new ToggleView(Constants.Settings.Sp1PageVisToggle1Id, Constants.Settings.Sp1PageVisToggle1Name, true),

@@ -35,8 +35,8 @@ This sample is available for your use according to the [GNU Affero General Publi
 [license-url]: https://github.com/HomeSeer/Sample-Plugin-CS/blob/master/LICENSE
 [distribution-policy]: https://homeseer.com/3rd-party-development-distribution-policy/
 
-[hs-version-badge]: https://img.shields.io/badge/Works%20With-HS4.1.15.0-blue
-[sdk-version-badge]: https://img.shields.io/badge/Works%20With-PluginSDK%201.2.4.0-green
+[hs-version-badge]: https://img.shields.io/badge/Works%20With-HS4.1.17.0-blue
+[sdk-version-badge]: https://img.shields.io/badge/Works%20With-PluginSDK%201.3.0.0-green
 [open-issues]: https://img.shields.io/github/issues-raw/HomeSeer/Sample-Plugin-CS
 [open-pull-requests]: https://img.shields.io/github/issues-pr-raw/HomeSeer/Sample-Plugin-CS
 [maintained-badge]: https://img.shields.io/github/last-commit/HomeSeer/Sample-Plugin-CS

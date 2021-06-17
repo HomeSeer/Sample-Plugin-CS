@@ -98,16 +98,24 @@ namespace HSPI_HomeSeerSamplePlugin {
             //Add a LabelView to the page
             settingsPage1.WithLabel(Constants.Settings.Sp1ColorLabelId, null, 
                                     Constants.Settings.Sp1ColorLabelValue);
-            //Create a list of ToggleViews using the keys and values stored in Constants.Settings.ColorMap as
-            // the IDs and Names respectively
-            var colorToggles = Constants.Settings.ColorMap
-                                        .Select(kvp => new ToggleView(kvp.Key, kvp.Value, true)
-                                                       {ToggleType = EToggleType.Checkbox})
-                                        .ToList();
-            //Add a ViewGroup containing all of the ToggleViews to the page
-            settingsPage1.WithGroup(Constants.Settings.Sp1ColorGroupId,
-                                    Constants.Settings.Sp1ColorGroupName,
-                                    colorToggles);
+
+            //Create a group of ToggleViews displayed as a flexbox grid 
+            var colorViewGroup = new GridView(Constants.Settings.Sp1ColorGroupId, Constants.Settings.Sp1ColorGroupName);
+            var colorFirstRow = new  GridRow();
+            colorFirstRow.AddItem(new ToggleView(Constants.Settings.Sp1ColorToggleRedId, Constants.Settings.ColorRedName, true) { ToggleType = EToggleType.Checkbox }, extraSmallSize: EColSize.Col6, largeSize: EColSize.Col3);
+            colorFirstRow.AddItem(new ToggleView(Constants.Settings.Sp1ColorToggleOrangeId, Constants.Settings.ColorOrangeName, true) { ToggleType = EToggleType.Checkbox }, extraSmallSize: EColSize.Col6, largeSize: EColSize.Col3);
+            colorFirstRow.AddItem(new ToggleView(Constants.Settings.Sp1ColorToggleYellowId, Constants.Settings.ColorYellowName, true) { ToggleType = EToggleType.Checkbox }, extraSmallSize: EColSize.Col6, largeSize: EColSize.Col3);
+            colorFirstRow.AddItem(new ToggleView(Constants.Settings.Sp1ColorToggleGreenId, Constants.Settings.ColorGreenName, true) { ToggleType = EToggleType.Checkbox }, extraSmallSize: EColSize.Col6, largeSize: EColSize.Col3);
+            var colorSecondRow = new GridRow();
+            colorSecondRow.AddItem(new ToggleView(Constants.Settings.Sp1ColorToggleBlueId, Constants.Settings.ColorBlueName, true) { ToggleType = EToggleType.Checkbox }, extraSmallSize: EColSize.Col6, largeSize: EColSize.Col3);
+            colorSecondRow.AddItem(new ToggleView(Constants.Settings.Sp1ColorToggleIndigoId, Constants.Settings.ColorIndigoName, true) { ToggleType = EToggleType.Checkbox }, extraSmallSize: EColSize.Col6, largeSize: EColSize.Col3);
+            colorSecondRow.AddItem(new ToggleView(Constants.Settings.Sp1ColorToggleVioletId, Constants.Settings.ColorVioletName, true) { ToggleType = EToggleType.Checkbox }, extraSmallSize: EColSize.Col6, largeSize: EColSize.Col3);
+
+            colorViewGroup.AddRow(colorFirstRow);
+            colorViewGroup.AddRow(colorSecondRow);
+            //Add the ViewGroup containing all of the ToggleViews to the page
+            settingsPage1.WithView(colorViewGroup);
+
             //Create 2 ToggleViews for controlling the visibility of the other two settings pages
             var pageToggles = new List<ToggleView> {
                                   new ToggleView(Constants.Settings.Sp1PageVisToggle1Id, Constants.Settings.Sp1PageVisToggle1Name, true),
@@ -147,6 +155,15 @@ namespace HSPI_HomeSeerSamplePlugin {
             settingsPage2.WithRadioSelectList(Constants.Settings.Sp2RadioSlId,
                                          Constants.Settings.Sp2RadioSlName,
                                          Constants.Settings.Sp2SelectListOptions);
+
+            //Add a text area to the page
+            settingsPage2.WithTextArea(Constants.Settings.Sp2TextAreaId,
+                                         Constants.Settings.Sp2TextAreaName,
+                                         3);
+                                         
+            //Add a time span to the page
+            settingsPage2.WithTimeSpan(Constants.Settings.Sp2SampleTimeSpanId, Constants.Settings.Sp2SampleTimeSpanName);
+            
             //Add the second page to the list of plugin settings pages
             Settings.Add(settingsPage2.Page);
             
@@ -209,6 +226,12 @@ namespace HSPI_HomeSeerSamplePlugin {
 
             Console.WriteLine("Initialized");
             Status = PluginStatus.Ok();
+        }
+
+        protected override void OnShutdown()
+        {
+            Console.WriteLine("Shutting down");
+            _speakerClient.Disconnect();
         }
 
         protected override bool OnSettingChange(string pageId, AbstractView currentView, AbstractView changedView) {
@@ -281,6 +304,18 @@ namespace HSPI_HomeSeerSamplePlugin {
             {
                 inputValue = inputSavedValue;
             }
+            string textAreaSavedValue = GetExtraData(deviceRef, Constants.Devices.DeviceConfigTextAreaId);
+            string textAreaValue = "";
+            if (!string.IsNullOrEmpty(textAreaSavedValue))
+            {
+                textAreaValue = textAreaSavedValue;
+            }
+            string timeSpanSavedValue = GetExtraData(deviceRef, Constants.Devices.DeviceConfigTimeSpanId);
+            TimeSpan timeSpanValue = TimeSpan.Zero;
+            if(!string.IsNullOrEmpty(timeSpanSavedValue))
+            {
+                TimeSpan.TryParse(timeSpanSavedValue, out timeSpanValue);
+            }
 
             //Start a PageFactory to construct the Page
             var deviceConfigPage = PageFactory.CreateDeviceConfigPage(Constants.Devices.DeviceConfigPageId,
@@ -313,6 +348,18 @@ namespace HSPI_HomeSeerSamplePlugin {
                                        Constants.Devices.DeviceConfigInputName,
                                        inputValue);
 
+            //Add a text area to the page
+            deviceConfigPage.WithTextArea(Constants.Devices.DeviceConfigTextAreaId,
+                                       Constants.Devices.DeviceConfigTextAreaName,
+                                       textAreaValue);
+
+            //Add a time span to the page
+            deviceConfigPage.WithTimeSpan(Constants.Devices.DeviceConfigTimeSpanId,
+                                       Constants.Devices.DeviceConfigTimeSpanName,
+                                       timeSpanValue,
+                                       true,
+                                       false);
+                                       
             return deviceConfigPage.Page.ToJsonString();
         }
 
@@ -359,6 +406,22 @@ namespace HSPI_HomeSeerSamplePlugin {
                     if (v != null)
                     {
                         SetExtraData(deviceRef, Constants.Devices.DeviceConfigInputId, v.Value);
+                    }
+                }
+                else if (view.Id == Constants.Devices.DeviceConfigTextAreaId)
+                {
+                    TextAreaView v = view as TextAreaView;
+                    if (v != null)
+                    {
+                        SetExtraData(deviceRef, Constants.Devices.DeviceConfigTextAreaId, v.Value);
+                    }
+                }
+                else if (view.Id == Constants.Devices.DeviceConfigTimeSpanId)
+                {
+                    TimeSpanView v = view as TimeSpanView;
+                    if (v != null)
+                    {
+                        SetExtraData(deviceRef, Constants.Devices.DeviceConfigTimeSpanId, v.GetStringValue());
                     }
                 }
             }

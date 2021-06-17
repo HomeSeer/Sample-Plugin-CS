@@ -45,6 +45,9 @@ namespace HSPI_HomeSeerSamplePlugin.Constants {
 
         public static string DeviceConfigTextAreaId => $"{DeviceConfigPageId}-sampletextarea";
         public const string DeviceConfigTextAreaName = "Sample Text Area";
+        
+        public static string DeviceConfigTimeSpanId => $"{DeviceConfigPageId}-sampletimespan";
+        public const string DeviceConfigTimeSpanName = "Sample Time Span";
 
     }
 
